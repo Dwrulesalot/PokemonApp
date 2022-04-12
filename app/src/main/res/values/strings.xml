@@ -3,4 +3,6 @@
     <string name="searchHint">Enter Pokemon Name Here</string>
     <string name="menuViewSavedText">View Saved Pokemon</string>
     <string name="menuSearchText">Search for Pokemon</string>
+    <string name="heightText">Height: </string>
+    <string name="weightText">Weight: </string>
 </resources>
