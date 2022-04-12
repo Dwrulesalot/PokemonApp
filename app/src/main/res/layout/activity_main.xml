@@ -7,22 +7,13 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/verticalGuideline1"
+        android:id="@+id/verticalGuideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:orientation="vertical"
         app:layout_constraintGuide_percent=".5"
         />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/verticalGuideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".1"
-        />
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontalGuideline1"
@@ -33,23 +24,15 @@
         app:layout_constraintGuide_percent=".10"
         />
 
-    <ImageView
-        android:id="@+id/searchIconImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:srcCompat="@drawable/search_icon_foreground"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/verticalGuideline2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/horizontalGuideline1"/>
 
     <EditText
         android:id="@+id/mainSearchBar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/searchHint"
         android:textSize="20dp"
+
+        android:drawableLeft="@drawable/search_icon_foreground"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
