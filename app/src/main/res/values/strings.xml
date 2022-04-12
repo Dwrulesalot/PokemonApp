@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Pokemon App</string>
+    <string name="searchHint">Enter Pokemon Name Here</string>
+</resources>
