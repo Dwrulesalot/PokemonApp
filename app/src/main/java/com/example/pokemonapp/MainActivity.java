@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,5 +21,12 @@ public class MainActivity extends AppCompatActivity {
         searchBar = (EditText) findViewById(R.id.mainSearchBar);
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
 
+    }
+
+    //Menu Creation
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.app_menu, menu);
+        return true;
     }
 }
