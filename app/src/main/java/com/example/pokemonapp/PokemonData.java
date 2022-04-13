@@ -46,6 +46,11 @@ public class PokemonData {
     @Ignore
     String[] stats;
 
+    //temp
+    public PokemonData(){
+
+    }
+
     public PokemonData(int id, String smallIcon, String bigIcon, String name, int height, int weight, String[] types, String[] stats){
         this.id = id;
         this.smallIcon = smallIcon;

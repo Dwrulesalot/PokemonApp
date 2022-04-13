@@ -23,6 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SavedPokemonActivity"
+            android:exported="true">
+            <!--Do I need intent filter here for details page to grab info?-->
+        </activity>
+        <activity
+            android:name=".DetailsActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
