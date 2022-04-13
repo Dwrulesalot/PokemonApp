@@ -3,12 +3,15 @@ package com.example.pokemonapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+
+    DatabaseManager dbManager;//do I need this here? or only in details page & Saved page?
 
     EditText searchBar;
     RecyclerView pokemonListRecyclerView;
