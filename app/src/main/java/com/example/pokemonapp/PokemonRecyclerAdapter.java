@@ -95,13 +95,19 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
                     //todo check if this will work when list comes from api - should all this info be passed or should I do another api call?
                     Intent detailsIntent = new Intent(c, DetailsActivity.class);
                     detailsIntent.putExtra("name", pokemonName.getText());
-                    detailsIntent.putExtra("height", pokemonHeight.getText());
-                    detailsIntent.putExtra("weight", pokemonWeight.getText());
-
-                    detailsIntent.putExtra("image", pokemonDataArrayList.get(position).bigIcon);
+                    //text including the decimal and measurement
+                    detailsIntent.putExtra("heightText", pokemonHeight.getText());
+                    detailsIntent.putExtra("weightText", pokemonWeight.getText());
+                    //Integer of the pokemon - for the database
+                    detailsIntent.putExtra("height", pokemonDataArrayList.get(position).height);
+                    detailsIntent.putExtra("weight", pokemonDataArrayList.get(position).weight);
+                    detailsIntent.putExtra("smallImage", pokemonDataArrayList.get(position).smallIcon);
+                    detailsIntent.putExtra("bigImage", pokemonDataArrayList.get(position).bigIcon);
                     detailsIntent.putExtra("id", pokemonDataArrayList.get(position).id);//how will this be effected when using database/api calls
 
-                    //todo functionality for stats and types - need to break them down somehow
+                    //todo fix functionality for stats and types - need to break them down somehow
+                    detailsIntent.putExtra("stats", pokemonDataArrayList.get(position).stats);
+                    detailsIntent.putExtra("types", pokemonDataArrayList.get(position).types);
 
                     c.startActivity(detailsIntent);
                 }

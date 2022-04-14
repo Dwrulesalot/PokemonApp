@@ -12,10 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SavedPokemonActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class SavedPokemonActivity extends AppCompatActivity implements DatabaseManager.DatabaseListener{
 
     RecyclerView savedRecyclerView;
     PokemonRecyclerAdapter pokemonRecyclerAdapter;
+
+    DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,12 +28,11 @@ public class SavedPokemonActivity extends AppCompatActivity {
 
         savedRecyclerView = (RecyclerView) findViewById(R.id.savedRecyclerView);
 
-        //todo change below to display based on what pokemon are in the database
-        /*
-        pokemonRecyclerAdapter = new PokemonRecyclerAdapter(exampleListPokemonData, this);
-        pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);
-        pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        */
+        databaseManager = ((MyApp)getApplication()).dbManager;
+        databaseManager.getDb(this);
+        databaseManager.listener = this;
+        databaseManager.getAllPokemon();
+
     }
 
     //Menu Creation
@@ -55,5 +58,12 @@ public class SavedPokemonActivity extends AppCompatActivity {
     void searchActivityNavigation() {
         Intent savedActivity = new Intent(SavedPokemonActivity.this, MainActivity.class);//
         startActivity(savedActivity);
+    }
+
+    @Override
+    public void onDataListReady(ArrayList<PokemonData> list) {
+        pokemonRecyclerAdapter = new PokemonRecyclerAdapter(list, this);
+        savedRecyclerView.setAdapter(pokemonRecyclerAdapter);
+        savedRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

@@ -16,7 +16,7 @@ public interface PokemonDao {
     void deletePokemonFromDB(PokemonData toDeletePokemonData);
 
     @Query("SELECT * FROM PokemonData")
-    List<PokemonData> getAll();
+    List<PokemonData> getAll();//todo check if this can be an arrayList so it works with my recycler view
 
     //do I want any other queries?
 }
