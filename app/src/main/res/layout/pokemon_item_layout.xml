@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
 
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".6"
+        app:layout_constraintGuide_percent=".5"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -33,8 +33,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/pokemonSmallIcon"
-        android:layout_width="250px"
-        android:layout_height="250px"
+        android:layout_width="269px"
+        android:layout_height="269px"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -51,7 +51,7 @@
 
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
         app:layout_constraintLeft_toLeftOf="@id/verticalGuideline1"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toRightOf="@id/verticalGuideline2"
         app:layout_constraintTop_toTopOf="parent"
         />
 

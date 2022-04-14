@@ -7,4 +7,7 @@
     <string name="weightText">Weight: </string>
     <string name="saveButton">Save</string>
     <string name="deleteButton">Remove</string>
+    <string name="weightMeasurement">kg</string>
+    <string name="heightMeasurement">m</string>
+
 </resources>

@@ -2,6 +2,7 @@ package com.example.pokemonapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,32 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
         //using Picasso to load/show image
         Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
         holder.pokemonName.setText(pokemonDataArrayList.get(position).name);
-        holder.pokemonHeight.setText(String.valueOf(pokemonDataArrayList.get(position).height));
-        holder.pokemonWeight.setText(String.valueOf(pokemonDataArrayList.get(position).weight));
 
+        holder.pokemonHeight.setText(heightToString(String.valueOf(pokemonDataArrayList.get(position).height)));
+        holder.pokemonWeight.setText(weightToString(String.valueOf(pokemonDataArrayList.get(position).weight)));
+    }
+    public String heightToString(String height){
+        StringBuilder heightText = new StringBuilder(height);
+        //if shorter than a meter tall adding a 0 in front
+        if(heightText.length() ==1)
+            heightText.insert(0,"0");
+        heightText.insert(heightText.length()-1, '.');
+        //context so that I can access my String resource
+        Context tempContext = context.getApplicationContext();
+        heightText.append(" "+tempContext.getString(R.string.heightMeasurement));
+        //Log.d("Ass4", "PokemonRecyclerAdapter.heightToString(): String.valueOf(heightText)= "+String.valueOf(heightText));
+        return String.valueOf(heightText);
+    }
+    public String weightToString(String weight){
+        StringBuilder weightText = new StringBuilder(weight);
+        //if weighing less than a kg adding a 0 in front
+        if(weightText.length() == 1)
+            weightText.insert(0,"0");
+        weightText.insert(weightText.length()-1, '.');
+        //context so that I can access my String resource
+        Context tempContext = context.getApplicationContext();
+        weightText.append(" "+tempContext.getString(R.string.weightMeasurement));
+        return String.valueOf(weightText);
     }
 
     @Override
