@@ -2,6 +2,7 @@ package com.example.pokemonapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
@@ -14,12 +15,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseManager dbManager;//do I need this here? or only in details page & Saved page?
+    DatabaseManager dbManager;//do I need this here? or only in details page & Saved page when I'm saving/deleting to the database / getting from the database
 
     EditText searchBar;
     RecyclerView pokemonListRecyclerView;
+
+    //temp
+    PokemonData exampleData;
+    ArrayList<PokemonData> exampleListPokemonData;//in future set a default list and have a list for the current search
+
+    PokemonRecyclerAdapter pokemonRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +37,19 @@ public class MainActivity extends AppCompatActivity {
 
         searchBar = (EditText) findViewById(R.id.mainSearchBar);
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
+
+        //temp int id, String smallIcon, String bigIcon, String name, int height, int weight, String[] types, String[] stats
+        exampleData = new PokemonData(6,
+                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+                "charizard", 17, 905, new String[]{"fire", "flying"}, new String[]{"hp", "attack", "defense"}
+                );//WARNING this may be incorrect/ not how I get my data from the api - the string arrays are 100% wrong
+        exampleListPokemonData = new ArrayList<>();//probably set this in MyApp in future
+        exampleListPokemonData.add(exampleData);
+
+        pokemonRecyclerAdapter = new PokemonRecyclerAdapter(exampleListPokemonData, this);
+        pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);
+        pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 

@@ -30,12 +30,11 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".5"
         />
-
-    <!--todo check that this looks good-->
+    
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/pokemonSmallIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250px"
+        android:layout_height="250px"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -47,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
+        android:textAllCaps="true"
         android:textColor="@color/purple_500"
 
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
