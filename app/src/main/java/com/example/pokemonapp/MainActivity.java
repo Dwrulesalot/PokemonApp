@@ -10,6 +10,8 @@ import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseManager dbManager;//do I need this here? or only in details page & Saved page when I'm saving/deleting to the database / getting from the database
+    NetworkingService networkingService;
 
     EditText searchBar;
     RecyclerView pokemonListRecyclerView;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     PokemonData exampleData2;
     PokemonData exampleData3;
     ArrayList<PokemonData> exampleListPokemonData;//in future set a default list and have a list for the current search
+    ArrayList<PokemonData> defaultListPokemonData;
 
     PokemonRecyclerAdapter pokemonRecyclerAdapter;
 
@@ -37,9 +40,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        networkingService = ((MyApp)getApplication()).networkingService;
+
         searchBar = (EditText) findViewById(R.id.mainSearchBar);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+
+                // search method call
+                //
+
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
 
+        ///*
+        //todo replace the below examples with api call for first 151 pokemon?
         //temp int id, String smallIcon, String bigIcon, String name, int height, int weight, String[] types, String[] stats
         exampleData1 = new PokemonData(6,
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
@@ -60,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         exampleListPokemonData.add(exampleData1);
         exampleListPokemonData.add(exampleData2);
         exampleListPokemonData.add(exampleData3);
+        //*/
+        //new below
+        defaultListPokemonData = new ArrayList<>();
+        networkingService.getAllPokemon();//should run only once - maybe do this in myapp and call this list here instead
 
         pokemonRecyclerAdapter = new PokemonRecyclerAdapter(exampleListPokemonData, this);
         pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);

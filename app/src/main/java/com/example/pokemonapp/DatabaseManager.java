@@ -35,8 +35,9 @@ public class DatabaseManager {
             buildDBInstance(context);
         return db;
     }
-    //todo - details page will use this to check if the pokemon being displayed is already in the database
-    //public boolean isPokemonInDataBase(PokemonData pokemonData){        return false;    }//done in details - check if that's ok - might need this for delete no?
+
+    //todo - move from details page?
+    //public boolean isPokemonInDataBase(int id){ return false; }
 
     public void saveNewPokemon(PokemonData pokemonData){
         databaseExecutor.execute(new Runnable() {
