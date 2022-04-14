@@ -14,7 +14,7 @@ public class DetailsActivity extends AppCompatActivity {
     //Menu Creation
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.saved_menu, menu);
+        inflater.inflate(R.menu.details_menu, menu);
         return true;
     }
 
@@ -35,12 +35,12 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     void searchActivityNavigation() {
-        Intent savedActivity = new Intent(DetailsActivity.this, SavedPokemonActivity.class);//
+        Intent savedActivity = new Intent(DetailsActivity.this, MainActivity.class);//
         startActivity(savedActivity);
     }
 
     void savedActivityNavigation() {
-        Intent mainActivity = new Intent(DetailsActivity.this, MainActivity.class);//
+        Intent mainActivity = new Intent(DetailsActivity.this, SavedPokemonActivity.class);//
         startActivity(mainActivity);
     }
 }
