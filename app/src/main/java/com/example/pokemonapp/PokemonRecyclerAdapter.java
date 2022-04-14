@@ -34,9 +34,8 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
 
     @Override
     public void onBindViewHolder(@NonNull PokemonViewHolder holder, int position) {
-        //holder.pokemonSmallIcon.set//how do I set the image when all I have is a url?
         //using Picasso to load/show image
-        Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);//does this work?
+        Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
         holder.pokemonName.setText(pokemonDataArrayList.get(position).name);
         holder.pokemonHeight.setText(String.valueOf(pokemonDataArrayList.get(position).height));
         holder.pokemonWeight.setText(String.valueOf(pokemonDataArrayList.get(position).weight));
@@ -75,9 +74,10 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
                     detailsIntent.putExtra("height", pokemonHeight.getText());
                     detailsIntent.putExtra("weight", pokemonWeight.getText());
 
-                    detailsIntent.putExtra("name", pokemonName.getText());
+                    detailsIntent.putExtra("image", pokemonDataArrayList.get(position).bigIcon);
+                    detailsIntent.putExtra("id", pokemonDataArrayList.get(position).id);//how will this be effected when using database/api calls
 
-                    //todo functionality for stats and types
+                    //todo functionality for stats and types - need to break them down somehow
 
                     c.startActivity(detailsIntent);
                 }

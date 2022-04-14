@@ -30,7 +30,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".5"
         />
-    
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/pokemonSmallIcon"
         android:layout_width="250px"

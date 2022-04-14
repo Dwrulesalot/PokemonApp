@@ -1,15 +1,31 @@
 package com.example.pokemonapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.squareup.picasso.Picasso;
+
 public class DetailsActivity extends AppCompatActivity {
-    //need to take/display all pokemon info here
+    ImageView sprite;
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+
+        sprite = (ImageView) findViewById(R.id.pokemonBigIcon);
+
+        Picasso.get().load(getIntent().getStringExtra("image")).into(sprite);//right now the image is cut off when the phone is flipped sideways todo fix
+    }
 
     //Menu Creation
     public boolean onCreateOptionsMenu(Menu menu){

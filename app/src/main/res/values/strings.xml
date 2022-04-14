@@ -5,4 +5,6 @@
     <string name="menuSearchText">Search for Pokemon</string>
     <string name="heightText">Height: </string>
     <string name="weightText">Weight: </string>
+    <string name="saveButton">Save</string>
+    <string name="deleteButton">Remove</string>
 </resources>
