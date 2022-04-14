@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class DetailsActivity extends AppCompatActivity /*implements DatabaseManager.DatabaseListener*/ {
+public class DetailsActivity extends AppCompatActivity implements DatabaseManager.DatabaseListener {
     ImageView sprite;
     Button addPokemonBtn;
     Button deletePokemonBtn;
@@ -45,26 +45,24 @@ public class DetailsActivity extends AppCompatActivity /*implements DatabaseMana
 
         databaseManager = ((MyApp)getApplication()).dbManager;
         databaseManager.getDb(this);//todo check if the currently displayed pokemon is in the database and make the appropriate button visible
-        //databaseManager.getAllPokemon();
+        databaseManager.listener = this;//does this work?
+        databaseManager.getAllPokemon();
 
         addPokemonBtn = (Button) findViewById(R.id.savePokemonButton);
         addPokemonBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //answerClicked(true);//todo add functionality
+                addPokemonBtn.setVisibility(View.INVISIBLE);//prevents double clicking/error if background thread is still saving
                 databaseManager.saveNewPokemon(currentPokemon);
                 //toast?
-                addPokemonBtn.setVisibility(View.INVISIBLE);//prevents double clicking/other errors
-                //deletePokemonBtn.setVisibility(View.VISIBLE);
             }
         });
         deletePokemonBtn = (Button) findViewById(R.id.deletePokemonButton);
         deletePokemonBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //answerClicked(true);//todo add functionality
-                //toast?
-
-                //addPokemonBtn.setVisibility(View.VISIBLE);//Will be made visible when the background thread completes deleting it from the database?
+                //addPokemonBtn.setVisibility(View.VISIBLE);//Will be made visible when the background thread completes deleting it from the database
                 deletePokemonBtn.setVisibility(View.INVISIBLE);
+                databaseManager.deletePokemonByID(currentPokemon.id);
+                //toast?
             }
         });
 
@@ -103,10 +101,18 @@ public class DetailsActivity extends AppCompatActivity /*implements DatabaseMana
         startActivity(mainActivity);
     }
 
-    /*
+
     @Override
     public void onDataListReady(ArrayList<PokemonData> list) {
-        if(list.contains(currentPokemon)){
+        //Ensures the pokemon doesn't already exist in the database
+        //may want to do this in database manager instead
+        boolean isSaved = false;
+        for (int i=0; i<list.size();i++){
+            if(list.get(i).name.equalsIgnoreCase(currentPokemon.name)){
+                isSaved = true;
+            }
+        }
+        if(isSaved){
             addPokemonBtn.setVisibility(View.INVISIBLE);
             deletePokemonBtn.setVisibility(View.VISIBLE);
         }else{
@@ -114,5 +120,15 @@ public class DetailsActivity extends AppCompatActivity /*implements DatabaseMana
             deletePokemonBtn.setVisibility(View.INVISIBLE);
         }
     }
-    */
+
+    @Override
+    public void onAddComplete() {
+        databaseManager.getAllPokemon();
+    }
+
+    @Override
+    public void onDeleteComplete() {
+        databaseManager.getAllPokemon();
+    }
+
 }

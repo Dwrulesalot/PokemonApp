@@ -66,4 +66,14 @@ public class SavedPokemonActivity extends AppCompatActivity implements DatabaseM
         savedRecyclerView.setAdapter(pokemonRecyclerAdapter);
         savedRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    @Override
+    public void onAddComplete() {
+        databaseManager.getAllPokemon();
+    }
+
+    @Override
+    public void onDeleteComplete() {
+        databaseManager.getAllPokemon();
+    }
 }
