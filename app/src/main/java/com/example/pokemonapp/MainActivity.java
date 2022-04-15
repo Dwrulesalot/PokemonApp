@@ -26,12 +26,7 @@ public class MainActivity extends AppCompatActivity {
     EditText searchBar;
     RecyclerView pokemonListRecyclerView;
 
-    //temp
-    PokemonData exampleData1;
-    PokemonData exampleData2;
-    PokemonData exampleData3;
-    ArrayList<PokemonData> exampleListPokemonData;//in future set a default list and have a list for the current search
-    ArrayList<PokemonData> defaultListPokemonData;
+    ArrayList<PokemonData> currentListPokemonData;
 
     PokemonRecyclerAdapter pokemonRecyclerAdapter;
 
@@ -56,34 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
 
-        ///*
-        //todo replace the below examples with api call for first 151 pokemon?
-        //temp int id, String smallIcon, String bigIcon, String name, int height, int weight, String[] types, String[] stats
-        exampleData1 = new PokemonData(6,
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
-                "charizard", 17, 905, new String[]{"fire", "flying"}, new String[]{"hp", "attack", "defense"}
-                );//WARNING this may be incorrect/ not how I get my data from the api - the string arrays are 100% wrong
-        exampleData2 = new PokemonData(7,
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
-                "squirtle", 5, 90, new String[]{"temp", "temp"}, new String[]{"hp", "attack", "defense"}
-        );
-        exampleData3 = new PokemonData(8,
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
-                "wartortle", 10, 225, new String[]{"temp", "temp"}, new String[]{"hp", "attack", "defense"}
-        );
-        exampleListPokemonData = new ArrayList<>();//probably set this in MyApp in future
-        exampleListPokemonData.add(exampleData1);
-        exampleListPokemonData.add(exampleData2);
-        exampleListPokemonData.add(exampleData3);
-        //*/
-        //new below
-        defaultListPokemonData = new ArrayList<>();
-        networkingService.getAllPokemon();//should run only once - maybe do this in myapp and call this list here instead
 
-        pokemonRecyclerAdapter = new PokemonRecyclerAdapter(exampleListPokemonData, this);
+        currentListPokemonData = new ArrayList<>();//may be better in MyApp
+
+
+        pokemonRecyclerAdapter = new PokemonRecyclerAdapter(currentListPokemonData, this);
         pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);
         pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

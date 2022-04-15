@@ -4,8 +4,11 @@ public class PokemonSearchData {
     String name;
     String url;
 
+    public PokemonSearchData(){
+        name = "";
+        url = "";
+    }
 
-    //do I eventually wanna split the id# out of the url? or will this be easier?
     public PokemonSearchData(String url, String name){
         this.name = name;
         this.url = url;

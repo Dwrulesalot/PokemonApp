@@ -41,7 +41,7 @@ public class PokemonData {
     int height;
     int weight;
 
-    @Ignore     //todo check back if I still want to ignore this
+    @Ignore     //todo check back if I still want to ignore this - need to change these? - want variables inside of these maybe need classes to deal with this data?
     String[] types;
     @Ignore
     String[] stats;
