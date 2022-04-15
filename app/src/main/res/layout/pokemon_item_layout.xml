@@ -57,6 +57,7 @@
 
     <TextView
         android:id="@+id/heightText"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/heightText"
@@ -69,6 +70,7 @@
 
     <TextView
         android:id="@+id/pokemonHeight"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -80,6 +82,7 @@
 
     <TextView
         android:id="@+id/weightText"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/weightText"
@@ -92,6 +95,7 @@
 
     <TextView
         android:id="@+id/pokemonWeight"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
