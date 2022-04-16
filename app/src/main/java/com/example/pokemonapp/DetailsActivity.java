@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.squareup.picasso.Picasso;
 
@@ -85,6 +86,47 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
         specialDefense.setText(Integer.toString(currentPokemonData.specialDefenseStat));
         speed = (TextView) findViewById(R.id.detailsSpeed);
         speed.setText(Integer.toString(currentPokemonData.speedStat));
+
+        //functionality to change background depending on type value
+        if(currentPokemonData.type1.equalsIgnoreCase("bug")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.bug));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("dark")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("dragon")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.dragon));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("electric")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.electric));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("fairy")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.fairy));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("fighting")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.fighting));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("fire")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.fire));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("flying")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.flying));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("ghost")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.ghost));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("grass")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.grass));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("ground")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.ground));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("ice")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.ice));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("normal")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.normal));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("poison")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.poison));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("psychic")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.psychic));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("rock")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.rock));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("steel")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.steel));}
+        else if(currentPokemonData.type1.equalsIgnoreCase("water")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.water));}
+        else{type1.setBackgroundColor(ContextCompat.getColor(this, R.color.empty));}
+
+        if(currentPokemonData.type2.equalsIgnoreCase("bug")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.bug));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("dark")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("dragon")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.dragon));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("electric")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.electric));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("fairy")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.fairy));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("fighting")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.fighting));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("fire")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.fire));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("flying")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.flying));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("ghost")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.ghost));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("grass")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.grass));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("ground")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.ground));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("ice")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.ice));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("normal")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.normal));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("poison")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.poison));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("psychic")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.psychic));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("rock")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.rock));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("steel")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.steel));}
+        else if(currentPokemonData.type2.equalsIgnoreCase("water")){type2.setBackgroundColor(ContextCompat.getColor(this, R.color.water));}
+        else{type2.setBackgroundColor(ContextCompat.getColor(this, R.color.empty));}
 
         sprite = (ImageView) findViewById(R.id.pokemonBigIcon);
         Picasso.get().load(currentPokemonData.bigIcon).into(sprite);
