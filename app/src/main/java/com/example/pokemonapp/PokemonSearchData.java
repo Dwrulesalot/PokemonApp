@@ -14,5 +14,12 @@ public class PokemonSearchData {
         this.url = url;
     }
 
+    @Override
+    public String toString() {
+        return "PokemonSearchData{" +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
     //todo method that takes a string confirms if that string is contained in this pokemon's name - here or elsewhere?
 }
