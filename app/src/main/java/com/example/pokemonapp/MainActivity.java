@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     }
 
     private void displayDefaultSearch() {
-        Log.d("MainActivity: ", "displayDefaultSearch() is called");
         defaultSearchData = ((MyApp)getApplication()).defaultPokemon;
         currentSearchData = new ArrayList<>(0);
         currentListPokemonData = new ArrayList<>(0);

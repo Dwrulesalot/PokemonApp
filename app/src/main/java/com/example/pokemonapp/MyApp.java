@@ -31,8 +31,6 @@ public class MyApp extends Application implements NetworkingService.NetworkingLi
     public void dataListener(String jsonData) {
         allPokemon = jsonService.getFullPokemonList(jsonData);
         defaultPokemon = new ArrayList<PokemonSearchData>(allPokemon.subList(0,numOfDefaultPokemon));
-        Log.d("MyApp: String.valueOf(allPokemon)", String.valueOf(allPokemon));
-        Log.d("MyApp: String.valueOf(allPokemon.size())", String.valueOf(allPokemon.size()));
         Log.d("MyApp: String.valueOf(defaultPokemon)", String.valueOf(defaultPokemon));
     }
 

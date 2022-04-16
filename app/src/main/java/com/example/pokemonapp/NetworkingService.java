@@ -46,7 +46,6 @@ public class NetworkingService {
     //todo update to write to local storage file / cache instead - make file name the url or something?
     // the json is string too big (10-11 thousand characters for a single pokemon) and slows down everything when InputStreamReader reading into memory
     public void connect(String url){
-        Log.d("NetworkingService: url = ", url);
         networkExecutorService.execute(new Runnable() {
             @Override
             public void run() {
