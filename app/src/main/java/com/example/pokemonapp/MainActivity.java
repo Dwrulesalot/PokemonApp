@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 
 import android.app.AlertDialog;
 import android.app.Application;
@@ -48,16 +49,15 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         jsonService = ((MyApp)getApplication()).jsonService;
 
 
+        /* old search
         searchBar = (EditText) findViewById(R.id.mainSearchBar);
         searchBar.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-
                 //todo finish
-
                 //this might be constantly calling whenever search data is >3 therefore causing lag
 
                 //only going to search after 3 letters are entered to save load time
-                if(s.length()>2){
+                if(s.length()>1){
                     //currentSearchData = searchPokemonByName(String.valueOf(s));
                     //temp to test if json parse works
 
@@ -68,24 +68,66 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
                     //todo check if empty
                     getPokemonDataFromSearchData(currentSearchData);//does this work?
                     //currentListPokemonData = getPokemonDataFromSearchData(currentSearchData);
-
-
-
-
-
                 }
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
+         */
+
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
     }
 
-    //Menu Creation
+    //Menu Creation // moved Search functionality here as editText was very slow
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.search);
+
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
+        String input = searchView.getQuery().toString();
+
+        if (!input.isEmpty()) {
+
+            searchView.setIconified(false);
+            searchView.setQuery(input, false);
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //if something has been entered
+                if(s.length()>0){
+                    //currentSearchData = searchPokemonByName(String.valueOf(s));
+                    //temp to test if json parse works
+
+                    allPokemon = ((MyApp)getApplication()).allPokemon;
+
+                    Log.d("onQueryTextSubmit(String s): s: ", s);
+
+                    //clears previous search data
+                    currentSearchData = new ArrayList<>(0);
+
+                    currentSearchData = searchPokemonByName(s);
+
+                    Log.d("onQueryTextSubmit(String s): currentSearchData: ", currentSearchData.toString());
+
+                    //todo check if empty
+                    getPokemonDataFromSearchData(currentSearchData);//does this work?
+                    //currentListPokemonData = getPokemonDataFromSearchData(currentSearchData);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                return false;//should this be true?
+            }
+        });
+
         return true;
     }
 
@@ -120,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         //pokemonRecyclerAdapter = new PokemonRecyclerAdapter(currentListPokemon, this);
         //pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);
         //pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);//old
+        savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);
         pokemonListRecyclerView.setAdapter(savedPokemonRecyclerAdapter);
         pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
