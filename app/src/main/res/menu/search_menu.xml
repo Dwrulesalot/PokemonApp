@@ -7,4 +7,5 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/menuViewSaved" android:title="@string/menuViewSavedText" />
+    <item android:id="@+id/menuDisplayDefaultSearch" android:title="@string/menuDefaultSearch"/>
 </menu>

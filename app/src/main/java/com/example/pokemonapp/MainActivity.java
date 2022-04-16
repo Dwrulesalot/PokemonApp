@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     ArrayList<PokemonData> currentListPokemonData;
     ArrayList<PokemonSearchData> allPokemon;
     ArrayList<PokemonSearchData> currentSearchData;
+    ArrayList<PokemonSearchData> defaultSearchData;
 
     JsonService jsonService = new JsonService();
     NetworkingService networkingService;
     SavedPokemonRecyclerAdapter savedPokemonRecyclerAdapter;
     RecyclerView pokemonListRecyclerView;
     AlertDialog.Builder builder;
-    Boolean initComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +46,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         currentSearchData = ((MyApp)getApplication()).currentSearchData;
         currentListPokemonData = ((MyApp)getApplication()).currentListPokemonData;
         jsonService = ((MyApp)getApplication()).jsonService;
-        initComplete = ((MyApp)getApplication()).initComplete;
-
-        //default search page - once allPokemon has been initialised
-        if(initComplete){
-            networkingService.getDefaultPokemon();
-        }
+        defaultSearchData = ((MyApp)getApplication()).defaultPokemon;
 
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);
@@ -104,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
                     }
                 }
                 else {
+
                     builder.setTitle(R.string.searchErrorTitle);
                     builder.setMessage(R.string.emptyErrorMsg);
                     builder.setCancelable(true);
@@ -128,10 +124,20 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
             case R.id.menuViewSaved:
                 savedActivityNavigation();
                 break;
+            case R.id.menuDisplayDefaultSearch:
+                displayDefaultSearch();
+                break;
         }
         return true;
     }
 
+    private void displayDefaultSearch() {
+        Log.d("MainActivity: ", "displayDefaultSearch() is called");
+        defaultSearchData = ((MyApp)getApplication()).defaultPokemon;
+        currentSearchData = new ArrayList<>(0);
+        currentListPokemonData = new ArrayList<>(0);
+        getPokemonDataFromSearchData(defaultSearchData);
+    }
     void savedActivityNavigation() {
         Intent savedActivity = new Intent(MainActivity.this, SavedPokemonActivity.class);
         startActivity(savedActivity);
