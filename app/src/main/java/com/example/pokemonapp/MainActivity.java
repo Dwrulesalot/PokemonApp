@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
     private void displayDefaultSearch() {
         defaultSearchData = ((MyApp)getApplication()).defaultPokemon;
-        currentSearchData = new ArrayList<>(0);
+        currentSearchData = defaultSearchData;
         currentListPokemonData = new ArrayList<>(0);
         getPokemonDataFromSearchData(defaultSearchData);
     }
