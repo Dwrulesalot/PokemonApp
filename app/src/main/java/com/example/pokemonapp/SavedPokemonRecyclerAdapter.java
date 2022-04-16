@@ -1,3 +1,4 @@
+
 package com.example.pokemonapp;
 
 import android.content.Context;
@@ -16,15 +17,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecyclerAdapter.PokemonViewHolder>{
+public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokemonRecyclerAdapter.PokemonViewHolder>{
 
-    ArrayList<Pokemon> pokemonArrayList;
+    ArrayList<PokemonData> pokemonDataArrayList;
     Context context;
 
-    public PokemonRecyclerAdapter(ArrayList<Pokemon> pokemonArrayList, Context context){
-        this.pokemonArrayList = pokemonArrayList;
+    public SavedPokemonRecyclerAdapter(ArrayList<PokemonData> pokemonDataArrayList, Context context){
+        this.pokemonDataArrayList = pokemonDataArrayList;
         this.context = context;
     }
+
 
     @NonNull
     @Override
@@ -36,11 +38,11 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
     @Override
     public void onBindViewHolder(@NonNull PokemonViewHolder holder, int position) {
         //using Picasso to load/show image
-        Picasso.get().load(pokemonArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
-        holder.pokemonName.setText(pokemonArrayList.get(position).name);
+        Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
+        holder.pokemonName.setText(pokemonDataArrayList.get(position).name);
 
-        holder.pokemonHeight.setText(heightToString(String.valueOf(pokemonArrayList.get(position).height)));
-        holder.pokemonWeight.setText(weightToString(String.valueOf(pokemonArrayList.get(position).weight)));
+        holder.pokemonHeight.setText(heightToString(String.valueOf(pokemonDataArrayList.get(position).height)));
+        holder.pokemonWeight.setText(weightToString(String.valueOf(pokemonDataArrayList.get(position).weight)));
     }
     public String heightToString(String height){
         StringBuilder heightText = new StringBuilder(height);
@@ -51,6 +53,7 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
         //context so that I can access my String resource
         Context tempContext = context.getApplicationContext();
         heightText.append(" "+tempContext.getString(R.string.heightMeasurement));
+        //Log.d("Ass4", "PokemonRecyclerAdapter.heightToString(): String.valueOf(heightText)= "+String.valueOf(heightText));
         return String.valueOf(heightText);
     }
     public String weightToString(String weight){
@@ -67,7 +70,7 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
 
     @Override
     public int getItemCount() {
-        return pokemonArrayList.size();
+        return pokemonDataArrayList.size();
     }
 
     public class PokemonViewHolder extends RecyclerView.ViewHolder{
@@ -97,11 +100,16 @@ public class PokemonRecyclerAdapter extends RecyclerView.Adapter<PokemonRecycler
                     //text including the decimal and measurement
                     detailsIntent.putExtra("heightText", pokemonHeight.getText());
                     detailsIntent.putExtra("weightText", pokemonWeight.getText());
-                    detailsIntent.putExtra("height", pokemonArrayList.get(position).height);
-                    detailsIntent.putExtra("weight", pokemonArrayList.get(position).weight);
-                    detailsIntent.putExtra("smallImage", pokemonArrayList.get(position).smallIcon);
-                    detailsIntent.putExtra("bigImage", pokemonArrayList.get(position).bigIcon);
-                    detailsIntent.putExtra("id", pokemonArrayList.get(position).id);
+                    //Integer of the pokemon - for the database
+                    detailsIntent.putExtra("height", pokemonDataArrayList.get(position).height);
+                    detailsIntent.putExtra("weight", pokemonDataArrayList.get(position).weight);
+                    detailsIntent.putExtra("smallImage", pokemonDataArrayList.get(position).smallIcon);
+                    detailsIntent.putExtra("bigImage", pokemonDataArrayList.get(position).bigIcon);
+                    detailsIntent.putExtra("id", pokemonDataArrayList.get(position).id);//how will this be effected when using database/api calls
+
+                    //todo fix functionality for stats and types - need to break them down somehow
+                    detailsIntent.putExtra("stats", pokemonDataArrayList.get(position).stats);
+                    detailsIntent.putExtra("types", pokemonDataArrayList.get(position).types);
 
                     c.startActivity(detailsIntent);
                 }

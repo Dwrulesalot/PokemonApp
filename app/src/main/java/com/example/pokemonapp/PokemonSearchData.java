@@ -9,7 +9,7 @@ public class PokemonSearchData {
         url = "";
     }
 
-    public PokemonSearchData(String url, String name){
+    public PokemonSearchData(String name, String url){
         this.name = name;
         this.url = url;
     }

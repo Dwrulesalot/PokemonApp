@@ -17,7 +17,7 @@ import java.util.logging.LogRecord;
 
 public class NetworkingService {
     private String allPokemonURL = "https://pokeapi.co/api/v2/pokemon/?limit=1126";// todo make this string resource for different languages?
-    private String onePokemonURL = "https://pokeapi.co/api/v2/pokemon/";//add pokemon id - might not need this as if we search by name it gives the pokemon's url
+    private String onePokemonURL = "https://pokeapi.co/api/v2/pokemon/";// string resource as above?
 
     public static ExecutorService networkExecutorService = Executors.newFixedThreadPool(4);
     public static android.os.Handler networkingHandler = new Handler(Looper.getMainLooper());
@@ -31,18 +31,21 @@ public class NetworkingService {
     public void getAllPokemon(){
         connect(allPokemonURL);
     }
-    //Assuming I'm getting a url String from ResultModel - do I return/ store pokemon data somewhere?
+
     public void getPokemonByURL(String url){
         connect(url);
     }
+
+    public void getPokemonByID (int id){connect(onePokemonURL+Integer.toString(id));}
 
     public void connect(String url){
         networkExecutorService.execute(new Runnable() {
             @Override
             public void run() {
+                HttpURLConnection httpURLConnection = null;
                 try {
                     URL urlObject = new URL(url);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection)urlObject.openConnection();
+                    httpURLConnection = (HttpURLConnection)urlObject.openConnection();
                     httpURLConnection.setRequestMethod("GET");
                     httpURLConnection.setRequestProperty("Content-Type", "application/json");
 
@@ -63,17 +66,18 @@ public class NetworkingService {
                     networkingHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            networkingListener.dataListener(finalJsonString);
-                        }
+                            networkingListener.dataListener(finalJsonString);//null object reference error?
+                            }
                     });
-
-
 
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+                finally {
+                    httpURLConnection.disconnect();
                 }
             }
         });

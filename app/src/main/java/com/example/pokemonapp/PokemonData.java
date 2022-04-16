@@ -3,32 +3,10 @@ package com.example.pokemonapp;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 
-//do I need two of these? one for api and one for my database?
-//backup just in case:
-/*
-public class PokemonData {
-    int id;
-    String smallIcon;
-    String bigIcon;
-    String name;
-    int height;
-    int weight;
+import java.util.ArrayList;
 
-    String[] types;
-    String[] stats;
-
-    public PokemonData(int id, String smallIcon, String bigIcon, String name, int height, int weight, String[] types, String[] stats){
-        this.id = id;
-        this.smallIcon = smallIcon;
-        this.bigIcon = bigIcon;
-        this.name = name;
-        this.height = height;
-        this.weight = weight;
-        this.types = types;
-        this.stats = stats;
-    }
- */
 @Entity
 public class PokemonData {
     @PrimaryKey(autoGenerate = true)
@@ -41,17 +19,18 @@ public class PokemonData {
     int height;
     int weight;
 
-    @Ignore     //todo check back if I still want to ignore this - need to change these? - want variables inside of these maybe need classes to deal with this data?
-    String[] types;
+    //ignoring saving below - couldn't figure out Type Converters / making it it's own @ Entity was causing problems too
+    //todo will I need to api call for types/stats to display on details? or only if offline?
     @Ignore
-    String[] stats;
+    ArrayList<String> types;
+    @Ignore
+    ArrayList<StatModel> stats;
 
-    //temp
     public PokemonData(){
-
+        //should set this up eventually
     }
 
-    public PokemonData(int id, String smallIcon, String bigIcon, String name, int height, int weight, String[] types, String[] stats){
+    public PokemonData(int id, String smallIcon, String bigIcon, String name, int height, int weight, ArrayList<String> types, ArrayList<StatModel> stats){
         this.id = id;
         this.smallIcon = smallIcon;
         this.bigIcon = bigIcon;
@@ -60,5 +39,20 @@ public class PokemonData {
         this.weight = weight;
         this.types = types;
         this.stats = stats;
+    }
+
+    @Override
+    public String toString() {
+        return "PokemonData{" +
+                "databaseID=" + databaseID +
+                ", id=" + id +
+                ", smallIcon='" + smallIcon + '\'' +
+                ", bigIcon='" + bigIcon + '\'' +
+                ", name='" + name + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", types=" + types +
+                ", stats=" + stats +
+                '}';
     }
 }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class SavedPokemonActivity extends AppCompatActivity implements DatabaseManager.DatabaseListener{
 
     RecyclerView savedRecyclerView;
-    PokemonRecyclerAdapter pokemonRecyclerAdapter;
+    SavedPokemonRecyclerAdapter pokemonRecyclerAdapter;
 
     DatabaseManager databaseManager;
 
@@ -62,7 +62,7 @@ public class SavedPokemonActivity extends AppCompatActivity implements DatabaseM
 
     @Override
     public void onDataListReady(ArrayList<PokemonData> list) {
-        pokemonRecyclerAdapter = new PokemonRecyclerAdapter(list, this);
+        pokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(list, this);
         savedRecyclerView.setAdapter(pokemonRecyclerAdapter);
         savedRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
