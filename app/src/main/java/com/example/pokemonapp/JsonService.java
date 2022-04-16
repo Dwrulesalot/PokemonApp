@@ -80,20 +80,27 @@ public class JsonService {
             JSONArray typesArray = new JSONArray(String.valueOf(mainJsonObject.getJSONArray("types")));
 
             String[] allTypes = new String[]{"",""};
-            //Loops through types json array, putting each index into a jsonObject then adding it to pokemonData.types
-            for(int i = 0; i< typesArray.length(); i++){
-                String index = typesArray.get(0).toString();
-                JSONObject jsonObject = new JSONObject(index);
+
+            //All pokemon have either 1 or 2 types, no exceptions.
+            if (typesArray.length()==1){//if there's only one type
+                JSONObject jsonObject = new JSONObject(typesArray.get(0).toString());
                 JSONObject typeObject = new JSONObject(String.valueOf(jsonObject.getJSONObject("type")));
                 String name = typeObject.getString("name");
 
-                allTypes[i] = name;
+                allTypes[0] = name;
+            }else{//there's two types
+                JSONObject jsonObject1 = new JSONObject(typesArray.get(0).toString());
+                JSONObject jsonObject2 = new JSONObject(typesArray.get(1).toString());
+                JSONObject type1Object = new JSONObject(String.valueOf(jsonObject1.getJSONObject("type")));
+                JSONObject type2Object = new JSONObject(String.valueOf(jsonObject2.getJSONObject("type")));
+                String type1 = type1Object.getString("name");
+                String type2 = type2Object.getString("name");
+
+                allTypes = new String[]{type1, type2};
             }
-            //todo check that below works
 
             pokemonData.type1 = allTypes[0];
             pokemonData.type2 = allTypes[1];
-
 
             Log.d("JsonService-getPokemonData(String jsonData): pokemonData", String.valueOf(pokemonData));
 
