@@ -16,12 +16,10 @@ public class JsonService {
         ArrayList<PokemonSearchData> allPokemon = new ArrayList<>(0);
         try {
             JSONObject mainJsonObject = new JSONObject(jsonData);
-
             JSONArray resultsArray = new JSONArray(String.valueOf(String.valueOf(mainJsonObject.getJSONArray("results"))));
 
             //Loops through array, putting each index into a jsonObject then creating a pokemonSearchData and adding it to the allPokemon ArrayList
             for(int i = 0; i< resultsArray.length(); i++){
-
                 String index = resultsArray.get(i).toString();
                 JSONObject jsonObject = new JSONObject(index);
                 String name = jsonObject.getString("name");
@@ -30,35 +28,28 @@ public class JsonService {
                 PokemonSearchData pokemonSearchData = new PokemonSearchData(name, url);
                 allPokemon.add(pokemonSearchData);
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return allPokemon;//do I want to return or do I want to just change the MyApp allPokemon variable?
+        return allPokemon;
     }
 
     //returns all data for an individual Pokemon needed to display in recycler views/details page
     public PokemonData getPokemonData(String jsonData){
-
         PokemonData pokemonData = new PokemonData();
 
         try {
-
             JSONObject mainJsonObject = new JSONObject(jsonData);
-
             pokemonData.height = mainJsonObject.getInt("height");
             pokemonData.id = mainJsonObject.getInt("id");
             pokemonData.name =  mainJsonObject.getString("name");
             pokemonData.weight = mainJsonObject.getInt("weight");
-
 
             JSONObject sprites1JsonObject = new JSONObject(String.valueOf(mainJsonObject.getJSONObject("sprites")));
             pokemonData.smallIcon = sprites1JsonObject.getString("front_default");
             JSONObject sprites2JsonObject = new JSONObject(String.valueOf(sprites1JsonObject.getJSONObject("other")));
             JSONObject sprites3JsonObject = new JSONObject(String.valueOf(sprites2JsonObject.getJSONObject("official-artwork")));
             pokemonData.bigIcon = sprites3JsonObject.getString("front_default");
-
 
             JSONArray statsArray = new JSONArray(String.valueOf(mainJsonObject.getJSONArray("stats")));
             int[] allStats = new int[6];
@@ -69,7 +60,6 @@ public class JsonService {
                 int base_stat = jsonObject.getInt("base_stat");
                 allStats[i] = base_stat;
             }
-            //todo check that below works
             pokemonData.hpStat = allStats[0];
             pokemonData.attackStat = allStats[1];
             pokemonData.defenseStat = allStats[2];
@@ -78,7 +68,6 @@ public class JsonService {
             pokemonData.speedStat = allStats[5];
 
             JSONArray typesArray = new JSONArray(String.valueOf(mainJsonObject.getJSONArray("types")));
-
             String[] allTypes = new String[]{"",""};
 
             //All pokemon have either 1 or 2 types, no exceptions.
@@ -101,14 +90,11 @@ public class JsonService {
 
             pokemonData.type1 = allTypes[0];
             pokemonData.type2 = allTypes[1];
-
             Log.d("JsonService-getPokemonData(String jsonData): pokemonData", String.valueOf(pokemonData));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return pokemonData;
     }
-
 }

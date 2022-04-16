@@ -18,16 +18,13 @@ public class SavedPokemonActivity extends AppCompatActivity implements DatabaseM
 
     RecyclerView savedRecyclerView;
     SavedPokemonRecyclerAdapter pokemonRecyclerAdapter;
-
     DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_pokemon);
-
         savedRecyclerView = (RecyclerView) findViewById(R.id.savedRecyclerView);
-
         databaseManager = ((MyApp)getApplication()).dbManager;
         databaseManager.getDb(this);
         databaseManager.listener = this;
@@ -46,7 +43,6 @@ public class SavedPokemonActivity extends AppCompatActivity implements DatabaseM
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
         super.onOptionsItemSelected(menuItem);
-
         switch (menuItem.getItemId()){
             case R.id.menuSearch:
                 searchActivityNavigation();

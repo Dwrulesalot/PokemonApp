@@ -24,20 +24,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NetworkingService.NetworkingListener {
 
-    NetworkingService networkingService;
-
-    EditText searchBar;
-    RecyclerView pokemonListRecyclerView;
-
-    ArrayList<PokemonData> currentListPokemonData;//old
-
+    ArrayList<PokemonData> currentListPokemonData;
     ArrayList<PokemonSearchData> allPokemon;
-    ArrayList<PokemonSearchData> currentSearchData;//back this up in MyApp in onDestroy
+    ArrayList<PokemonSearchData> currentSearchData;
 
     JsonService jsonService = new JsonService();
-
+    NetworkingService networkingService;
     SavedPokemonRecyclerAdapter savedPokemonRecyclerAdapter;
-
+    RecyclerView pokemonListRecyclerView;
     AlertDialog.Builder builder;
     Boolean initComplete;
 
@@ -72,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         ((MyApp)getApplication()).currentListPokemonData = currentListPokemonData;
     }
 
-    //Menu Creation // moved Search functionality here as editText was very slow
+    //Menu Creation
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
@@ -109,11 +103,18 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
                         builder.show();
                     }
                 }
+                else {
+                    builder.setTitle(R.string.searchErrorTitle);
+                    builder.setMessage(R.string.emptyErrorMsg);
+                    builder.setCancelable(true);
+                    builder.setNegativeButton(R.string.ok,null);
+                    builder.show();
+                }
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String s) {
-                return false;//should this be true?
+                return false;
             }
         });
         return true;
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem menuItem){
         super.onOptionsItemSelected(menuItem);
-
         switch (menuItem.getItemId()){
             case R.id.menuViewSaved:
                 savedActivityNavigation();
@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         startActivity(savedActivity);
     }
 
-    //todo figure out why this takes 1m27s-1m40s every single time to return a single object???
     @Override
     public void dataListener(String jsonData) {
         currentListPokemonData.add(jsonService.getPokemonData(jsonData));
@@ -150,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
     //Loops through all pokemon, returns ArrayList of PokemonSearchData aka name/url of each pokemon that contains the search string
     public ArrayList<PokemonSearchData> searchPokemonByName(String searchString){
-
         ArrayList<PokemonSearchData> allMatchingPokemon = new ArrayList<>(0);
         PokemonSearchData matchingPokemon;
 
@@ -164,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         return allMatchingPokemon;
     }
 
-    //todo something here is taking a very long time - should I not store all data into PokemonData objects but a separate object instead?
     //loops through each PokemonSearchData and gets its url, uses the url to get Pokemon from NetworkService and adds it to currentListPokemon
     // then displays it through recycler view -  I get this data in dataListener(String jsonData)
     public void getPokemonDataFromSearchData(ArrayList<PokemonSearchData> searchDataArrayList){

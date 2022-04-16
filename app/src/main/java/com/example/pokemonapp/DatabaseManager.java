@@ -21,14 +21,13 @@ public class DatabaseManager {
 
     DatabaseListener listener;
     static PokemonDatabase db;
-    //does running this, alongside NetworkingService doing the same thing, work?
     ExecutorService databaseExecutor = Executors.newFixedThreadPool(20);
     Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
     static void buildDBInstance(Context context){
         db = Room.databaseBuilder(context,
-                PokemonDatabase.class, "test5_pokemon_db").build();//If I change PokemonData at all I need to build a new database/change name here
-    }                       //todo change above to pokemon_db when certain it works
+                PokemonDatabase.class, "pokemon_db").build();
+    }
 
     public PokemonDatabase getDb(Context context){
         if(db ==null)
@@ -36,15 +35,11 @@ public class DatabaseManager {
         return db;
     }
 
-    //todo - move from details page?
-    //public boolean isPokemonInDataBase(int id){ return false; }
-
     public void saveNewPokemon(PokemonData pokemonData){
         databaseExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 db.pokemonDao().addNewPokemonToDB(pokemonData);
-                //need this for proper display in SavedPokemon activity
                 mainThreadHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -60,7 +55,7 @@ public class DatabaseManager {
             @Override
             public void run() {
                 ArrayList<PokemonData> list = new ArrayList<PokemonData>(db.pokemonDao().getAll());
-                mainThreadHandler.post(new Runnable() {//goes to main thread
+                mainThreadHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         listener.onDataListReady(list);
@@ -76,7 +71,6 @@ public class DatabaseManager {
             public void run() {
                 PokemonData pokemonToDelete = db.pokemonDao().getPokemonDataById(id);
                 db.pokemonDao().deletePokemonFromDB(pokemonToDelete);
-                //need this for proper display in SavedPokemon activity
                 mainThreadHandler.post(new Runnable() {
                     @Override
                     public void run() {

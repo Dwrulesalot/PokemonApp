@@ -19,7 +19,7 @@ public class PokemonData {
     int height;
     int weight;
 
-    //there's a max of 2 types per pokemon: 18 options
+    //there's a max of 2 types per pokemon
     String type1;
     String type2;
     //there's always 6 stats: hp, attack, defense, special-attack, special-defense, speed in that order

@@ -17,9 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-//todo make Recycler similar to this for search page that api calls for rest of pokemon data not needed to display on recyclerView
 public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokemonRecyclerAdapter.PokemonViewHolder>{
-
     ArrayList<PokemonData> pokemonDataArrayList;
     Context context;
 
@@ -27,7 +25,6 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
         this.pokemonDataArrayList = pokemonDataArrayList;
         this.context = context;
     }
-
 
     @NonNull
     @Override
@@ -41,7 +38,6 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
         //using Picasso to load/show image
         Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
         holder.pokemonName.setText(pokemonDataArrayList.get(position).name);
-
         holder.pokemonHeight.setText(heightToString(String.valueOf(pokemonDataArrayList.get(position).height)));
         holder.pokemonWeight.setText(weightToString(String.valueOf(pokemonDataArrayList.get(position).weight)));
     }
@@ -88,25 +84,23 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
 
             //opening Details page and passing info
             itemView.setOnClickListener(new View.OnClickListener(){
-
                 @Override
                 public void onClick(View view){
-                    int position = getAdapterPosition();//need this for info not currently displayed
+                    //need position for info not currently displayed
+                    int position = getAdapterPosition();
                     Context c = view.getContext();
-
                     Intent detailsIntent = new Intent(c, DetailsActivity.class);
                     detailsIntent.putExtra("name", pokemonName.getText());
                     //text including the decimal and measurement
                     detailsIntent.putExtra("heightText", pokemonHeight.getText());
                     detailsIntent.putExtra("weightText", pokemonWeight.getText());
-                    //Integer of the pokemon - for the database
+
                     detailsIntent.putExtra("height", pokemonDataArrayList.get(position).height);
                     detailsIntent.putExtra("weight", pokemonDataArrayList.get(position).weight);
                     detailsIntent.putExtra("smallImage", pokemonDataArrayList.get(position).smallIcon);
                     detailsIntent.putExtra("bigImage", pokemonDataArrayList.get(position).bigIcon);
-                    detailsIntent.putExtra("id", pokemonDataArrayList.get(position).id);//how will this be effected when using database/api calls
+                    detailsIntent.putExtra("id", pokemonDataArrayList.get(position).id);
 
-                    //todo check if the below works
                     detailsIntent.putExtra("hpStat", pokemonDataArrayList.get(position).hpStat);
                     detailsIntent.putExtra("attackStat", pokemonDataArrayList.get(position).attackStat);
                     detailsIntent.putExtra("defenseStat", pokemonDataArrayList.get(position).defenseStat);

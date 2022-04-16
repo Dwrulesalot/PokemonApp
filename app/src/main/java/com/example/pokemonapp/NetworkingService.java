@@ -16,8 +16,8 @@ import java.util.concurrent.Executors;
 import java.util.logging.LogRecord;
 
 public class NetworkingService {
-    private String allPokemonURL = "https://pokeapi.co/api/v2/pokemon/?limit=1126";// todo make this string resource for different languages?
-    private String onePokemonURL = "https://pokeapi.co/api/v2/pokemon/";// string resource as above?
+    private String allPokemonURL = "https://pokeapi.co/api/v2/pokemon/?limit=1126";// todo make these string resource in future to support different languages
+    private String onePokemonURL = "https://pokeapi.co/api/v2/pokemon/";
     private String defaultPageURL = "https://pokeapi.co/api/v2/pokemon/?limit=26";
 
     public static ExecutorService networkExecutorService = Executors.newFixedThreadPool(20);
@@ -83,7 +83,6 @@ public class NetworkingService {
                     e.printStackTrace();
                 }
                 finally {
-                    Log.d("NetworkingService: networkExecutorService.execute:finally ","disconnects from http connection");
                     httpURLConnection.disconnect();
                 }
             }

@@ -21,5 +21,4 @@ public class PokemonSearchData {
                 ", url='" + url + '\'' +
                 '}';
     }
-    //todo method that takes a string confirms if that string is contained in this pokemon's name - here or elsewhere?
 }

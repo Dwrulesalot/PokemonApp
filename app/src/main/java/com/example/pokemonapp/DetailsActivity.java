@@ -37,9 +37,7 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
     TextView specialDefense;
     TextView speed;
 
-
     DatabaseManager databaseManager;
-
     PokemonData currentPokemonData;
     int currentPokemonID;
 
@@ -56,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
         //used for deleting from database
         currentPokemonID = getIntent().getIntExtra("id", -1);
 
-        //Defining currentPokemon from intents - so that it can be stored/removed from the DB
+        //Defining currentPokemon from intents
         currentPokemonData = new PokemonData(getIntent().getIntExtra("id",-1), getIntent().getStringExtra("smallImage"),getIntent().getStringExtra("bigImage"),
                 getIntent().getStringExtra("name"),getIntent().getIntExtra("height", -1), getIntent().getIntExtra("weight", -1),
                 getIntent().getStringExtra("type1"), getIntent().getStringExtra("type2"),getIntent().getIntExtra("hpStat", -1),
@@ -71,9 +69,9 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
         type2 = (TextView) findViewById(R.id.detailsType2);
         type2.setText(currentPokemonData.type2);
         height = (TextView) findViewById(R.id.detailsHeight);
-        height.setText(heightToString(Integer.toString(currentPokemonData.height)));
+        height.setText(getIntent().getStringExtra("heightText"));
         weight = (TextView) findViewById(R.id.detailsWeight);
-        weight.setText(weightToString(Integer.toString(currentPokemonData.weight)));
+        weight.setText(getIntent().getStringExtra("weightText"));
         hp = (TextView) findViewById(R.id.detailsHP);
         hp.setText(Integer.toString(currentPokemonData.hpStat));
         attack = (TextView) findViewById(R.id.detailsAttack);
@@ -134,7 +132,7 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
         addPokemonBtn = (Button) findViewById(R.id.savePokemonButton);
         addPokemonBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //prevents double clicking/error if background thread is still saving
+                //prevents double clicking
                 addPokemonBtn.setVisibility(View.INVISIBLE);
                 databaseManager.saveNewPokemon(currentPokemonData);
             }
@@ -147,30 +145,6 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
                 databaseManager.deletePokemonByID(currentPokemonID);
             }
         });
-
-    }
-
-    public String heightToString(String height){
-        StringBuilder heightText = new StringBuilder(height);
-        //if shorter than a meter tall adding a 0 in front
-        if(heightText.length() ==1)
-            heightText.insert(0,"0");
-        heightText.insert(heightText.length()-1, '.');
-        //context so that I can access my String resource
-        Context tempContext = this;
-        heightText.append(" "+tempContext.getString(R.string.heightMeasurement));
-        return String.valueOf(heightText);
-    }
-    public String weightToString(String weight){
-        StringBuilder weightText = new StringBuilder(weight);
-        //if weighing less than a kg adding a 0 in front
-        if(weightText.length() == 1)
-            weightText.insert(0,"0");
-        weightText.insert(weightText.length()-1, '.');
-        //context so that I can access my String resource
-        Context tempContext = this;
-        weightText.append(" "+tempContext.getString(R.string.weightMeasurement));
-        return String.valueOf(weightText);
     }
 
     //Menu Creation

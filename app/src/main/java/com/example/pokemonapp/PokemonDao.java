@@ -18,9 +18,7 @@ public interface PokemonDao {
     @Query("SELECT * FROM PokemonData")
     List<PokemonData> getAll();
 
-    //helps with deletion// double check this works
+    //helps with deletion
     @Query("SELECT * FROM PokemonData WHERE id= :id")
     PokemonData getPokemonDataById(int id);
-
-    //do I want any other queries?
 }

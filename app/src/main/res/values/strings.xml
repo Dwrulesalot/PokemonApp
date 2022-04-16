@@ -17,6 +17,7 @@
     <string name="hpText">HP</string>
     <string name="searchErrorTitle">Error! </string>
     <string name="searchErrorMsg">Unable to find any pokemon with that name, make sure to check your spelling.</string>
+    <string name="emptyErrorMsg">Please type into the search before submitting!</string>
     <string name="ok">OK</string>
 
 </resources>
