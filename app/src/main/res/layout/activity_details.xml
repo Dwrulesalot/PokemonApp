@@ -20,6 +20,14 @@
         android:layout_height="wrap_content"
 
         android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalGuideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
         app:layout_constraintGuide_percent=".75" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -29,15 +37,12 @@
 
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".5" />
-
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/pokemonBigIcon"
-        android:layout_width="1000px"
-        android:layout_height="1000px"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
 
-        app:layout_constraintBottom_toTopOf="@id/horizontalGuideline1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -46,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="@string/saveButton"
 
-        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline2"
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,9 +61,305 @@
         android:layout_height="wrap_content"
         android:text="@string/deleteButton"
 
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/verticalGuideline1"
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/detailsName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textSize="24dp"
+        android:text="TEMPORARY NAME"
+        android:textStyle="bold"
+        android:textColor="@color/black"
 
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/detailsTypeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textSize="20dp"
+        android:text="type"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toBottomOf="@id/deletePokemonButton"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <!-- todo change the below background colors/ text colors depending on the type?-->
+    <TextView
+        android:id="@+id/detailsType1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textSize="16dp"
+        android:text="dragon"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toBottomOf="@id/detailsTypeText"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/detailsType2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textSize="16dp"
+        android:text="temp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toBottomOf="@id/detailsType1"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/detailsHeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/heightText"
+        android:paddingTop="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toBottomOf="@id/detailsType2"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+    <TextView
+        android:id="@+id/detailsHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="temp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toBottomOf="@id/detailsHeightText"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/detailsWeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/weightText"
+        android:paddingTop="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toBottomOf="@id/detailsHeight"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+    <TextView
+        android:id="@+id/detailsWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="temp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="@id/verticalGuideline3"
+        app:layout_constraintTop_toBottomOf="@id/detailsWeightText"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+    <TextView
+        android:id="@+id/detailsHPText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textSize="20dp"
+        android:text="@string/hpText"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:background="@color/grey"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/detailsHP"
+        app:layout_constraintRight_toLeftOf="@id/detailsAttackText"
+        />
+    <TextView
+        android:id="@+id/detailsHP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="100"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/detailsAttackText"
+        />
+
+    <TextView
+        android:id="@+id/detailsAttackText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/attackText"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:background="@color/grey"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsHPText"
+        app:layout_constraintBottom_toTopOf="@id/detailsAttack"
+        app:layout_constraintRight_toLeftOf="@id/detailsDefenseText"
+        />
+    <TextView
+        android:id="@+id/detailsAttack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="100"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsHPText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/detailsDefenseText"
+        />
+
+    <TextView
+        android:id="@+id/detailsDefenseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/defenseText"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:background="@color/grey"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsAttackText"
+        app:layout_constraintBottom_toTopOf="@id/detailsDefense"
+        app:layout_constraintRight_toLeftOf="@id/detailsSpecialAttackText"
+        />
+    <TextView
+        android:id="@+id/detailsDefense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="100"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsAttackText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/detailsSpecialAttackText"
+        />
+
+    <TextView
+        android:id="@+id/detailsSpecialAttackText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/spAttText"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:background="@color/grey"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsDefenseText"
+        app:layout_constraintBottom_toTopOf="@id/detailsSpecialAttack"
+        app:layout_constraintRight_toLeftOf="@id/detailsSpecialDefenseText"
+        />
+    <TextView
+        android:id="@+id/detailsSpecialAttack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="100"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsDefenseText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/detailsSpecialDefenseText"
+        />
+
+
+
+    <TextView
+        android:id="@+id/detailsSpecialDefenseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/spDefText"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:background="@color/grey"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsSpecialAttackText"
+        app:layout_constraintBottom_toTopOf="@id/detailsSpecialDefense"
+        app:layout_constraintRight_toLeftOf="@id/detailsSpeedText"
+        />
+    <TextView
+        android:id="@+id/detailsSpecialDefense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="100"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsSpecialAttackText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/detailsSpeedText"
+        />
+
+
+
+    <TextView
+        android:id="@+id/detailsSpeedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/speedText"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:background="@color/grey"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsSpecialDefenseText"
+        app:layout_constraintBottom_toTopOf="@id/detailsSpeed"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+    <TextView
+        android:id="@+id/detailsSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:text="100"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        app:layout_constraintLeft_toRightOf="@id/detailsSpecialDefenseText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

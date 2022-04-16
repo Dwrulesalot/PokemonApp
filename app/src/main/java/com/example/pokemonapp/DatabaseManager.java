@@ -22,7 +22,7 @@ public class DatabaseManager {
     DatabaseListener listener;
     static PokemonDatabase db;
     //does running this, alongside NetworkingService doing the same thing, work?
-    ExecutorService databaseExecutor = Executors.newFixedThreadPool(4);
+    ExecutorService databaseExecutor = Executors.newFixedThreadPool(20);
     Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
     static void buildDBInstance(Context context){

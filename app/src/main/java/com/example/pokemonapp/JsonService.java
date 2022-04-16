@@ -90,12 +90,10 @@ public class JsonService {
                 allTypes[i] = name;
             }
             //todo check that below works
-            if(!allTypes[1].equals("")){
-                pokemonData.type1 = allTypes[0];
-                pokemonData.type2 = allTypes[1];
-            }else{
-                pokemonData.type1 = allTypes[0];
-            }
+
+            pokemonData.type1 = allTypes[0];
+            pokemonData.type2 = allTypes[1];
+
 
             Log.d("JsonService-getPokemonData(String jsonData): pokemonData", String.valueOf(pokemonData));
 

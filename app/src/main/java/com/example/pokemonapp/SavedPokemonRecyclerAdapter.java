@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+//todo make Recycler similar to this for search page that api calls for rest of pokemon data not needed to display on recyclerView
 public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokemonRecyclerAdapter.PokemonViewHolder>{
 
     ArrayList<PokemonData> pokemonDataArrayList;
@@ -53,7 +54,6 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
         //context so that I can access my String resource
         Context tempContext = context.getApplicationContext();
         heightText.append(" "+tempContext.getString(R.string.heightMeasurement));
-        //Log.d("Ass4", "PokemonRecyclerAdapter.heightToString(): String.valueOf(heightText)= "+String.valueOf(heightText));
         return String.valueOf(heightText);
     }
     public String weightToString(String weight){

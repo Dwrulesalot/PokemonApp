@@ -1,5 +1,6 @@
 package com.example.pokemonapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,18 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
     ImageView sprite;
     Button addPokemonBtn;
     Button deletePokemonBtn;
+    TextView name;
+    TextView type1;
+    TextView type2;
+    TextView height;
+    TextView weight;
+    TextView hp;
+    TextView attack;
+    TextView defense;
+    TextView specialAttack;
+    TextView specialDefense;
+    TextView speed;
+
 
     DatabaseManager databaseManager;
 
@@ -38,6 +52,7 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
         databaseManager.listener = this;
         databaseManager.getAllPokemon();
 
+        //used for deleting from database
         currentPokemonID = getIntent().getIntExtra("id", -1);
 
         //Defining currentPokemon from intents - so that it can be stored/removed from the DB
@@ -48,12 +63,31 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
                 getIntent().getIntExtra("specialAttackStat", -1), getIntent().getIntExtra("specialDefenseStat", -1),
                 getIntent().getIntExtra("speedStat", -1));
 
+        name = (TextView) findViewById(R.id.detailsName);
+        name.setText(currentPokemonData.name);
+        type1 = (TextView) findViewById(R.id.detailsType1);
+        type1.setText(currentPokemonData.type1);
+        type2 = (TextView) findViewById(R.id.detailsType2);
+        type2.setText(currentPokemonData.type2);
+        height = (TextView) findViewById(R.id.detailsHeight);
+        height.setText(heightToString(Integer.toString(currentPokemonData.height)));
+        weight = (TextView) findViewById(R.id.detailsWeight);
+        weight.setText(weightToString(Integer.toString(currentPokemonData.weight)));
+        hp = (TextView) findViewById(R.id.detailsHP);
+        hp.setText(Integer.toString(currentPokemonData.hpStat));
+        attack = (TextView) findViewById(R.id.detailsAttack);
+        attack.setText(Integer.toString(currentPokemonData.attackStat));
+        defense = (TextView) findViewById(R.id.detailsDefense);
+        defense.setText(Integer.toString(currentPokemonData.defenseStat));
+        specialAttack = (TextView) findViewById(R.id.detailsSpecialAttack);
+        specialAttack.setText(Integer.toString(currentPokemonData.specialAttackStat));
+        specialDefense = (TextView) findViewById(R.id.detailsSpecialDefense);
+        specialDefense.setText(Integer.toString(currentPokemonData.specialDefenseStat));
+        speed = (TextView) findViewById(R.id.detailsSpeed);
+        speed.setText(Integer.toString(currentPokemonData.speedStat));
 
-        Log.d("Details Activity: currentPokemonData.toString()",currentPokemonData.toString());
-        //todo need to still build the details page to display all of the above
         sprite = (ImageView) findViewById(R.id.pokemonBigIcon);
-        //right now the image is cut off when the phone is flipped sideways todo fix
-        Picasso.get().load(getIntent().getStringExtra("bigImage")).into(sprite);
+        Picasso.get().load(currentPokemonData.bigIcon).into(sprite);
 
         addPokemonBtn = (Button) findViewById(R.id.savePokemonButton);
         addPokemonBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +106,29 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
             }
         });
 
+    }
+
+    public String heightToString(String height){
+        StringBuilder heightText = new StringBuilder(height);
+        //if shorter than a meter tall adding a 0 in front
+        if(heightText.length() ==1)
+            heightText.insert(0,"0");
+        heightText.insert(heightText.length()-1, '.');
+        //context so that I can access my String resource
+        Context tempContext = this;
+        heightText.append(" "+tempContext.getString(R.string.heightMeasurement));
+        return String.valueOf(heightText);
+    }
+    public String weightToString(String weight){
+        StringBuilder weightText = new StringBuilder(weight);
+        //if weighing less than a kg adding a 0 in front
+        if(weightText.length() == 1)
+            weightText.insert(0,"0");
+        weightText.insert(weightText.length()-1, '.');
+        //context so that I can access my String resource
+        Context tempContext = this;
+        weightText.append(" "+tempContext.getString(R.string.weightMeasurement));
+        return String.valueOf(weightText);
     }
 
     //Menu Creation

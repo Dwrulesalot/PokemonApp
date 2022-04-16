@@ -9,5 +9,11 @@
     <string name="deleteButton">Remove</string>
     <string name="weightMeasurement">kg</string>
     <string name="heightMeasurement">m</string>
+    <string name="speedText">Speed</string>
+    <string name="spDefText">Sp. Def</string>
+    <string name="spAttText">Sp. Att</string>
+    <string name="defenseText">Defense</string>
+    <string name="attackText">Attack</string>
+    <string name="hpText">HP</string>
 
 </resources>

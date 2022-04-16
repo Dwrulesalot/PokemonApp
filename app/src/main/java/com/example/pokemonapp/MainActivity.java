@@ -11,6 +11,7 @@ import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,12 +29,12 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     EditText searchBar;
     RecyclerView pokemonListRecyclerView;
 
-    ArrayList<PokemonData> currentListPokemonData;//back this up in MyApp in onDestroy
+    ArrayList<PokemonData> currentListPokemonData;//old
 
     ArrayList<PokemonSearchData> allPokemon;
     ArrayList<PokemonSearchData> currentSearchData;//back this up in MyApp in onDestroy
 
-    JsonService jsonService;
+    JsonService jsonService = new JsonService();
 
     SavedPokemonRecyclerAdapter savedPokemonRecyclerAdapter;
 
@@ -41,8 +42,15 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //attempting to fix slow httpConnection issue
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new
+                    StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
-        networkingService = ((MyApp)getApplication()).networkingService;
+        networkingService = ((MyApp)getApplication()).getNetworkingService();
         allPokemon = ((MyApp)getApplication()).allPokemon;
         currentSearchData = ((MyApp)getApplication()).currentSearchData;
         currentListPokemonData = ((MyApp)getApplication()).currentListPokemonData;
@@ -76,7 +84,17 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
          */
 
+
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
+        savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);
+        pokemonListRecyclerView.setAdapter(savedPokemonRecyclerAdapter);
+        pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //todo backup all things called from MyApp here
     }
 
     //Menu Creation // moved Search functionality here as editText was very slow
@@ -105,10 +123,10 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
                     allPokemon = ((MyApp)getApplication()).allPokemon;
 
-                    Log.d("onQueryTextSubmit(String s): s: ", s);
 
-                    //clears previous search data
+                    //clears previous search data /recyclerview data
                     currentSearchData = new ArrayList<>(0);
+                    currentListPokemonData = new ArrayList<>(0);
 
                     currentSearchData = searchPokemonByName(s);
 
@@ -149,27 +167,19 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         startActivity(savedActivity);
     }
 
+    //todo figure out why this takes 1m27s-1m40s every single time to return a single object???
     @Override
     public void dataListener(String jsonData) {
 
-        jsonService = ((MyApp)getApplication()).jsonService;
-
-        //currentListPokemon.add(jsonService.getPokemon(jsonData));
-        currentListPokemonData.add(jsonService.getPokemonData(jsonData));//old
+        currentListPokemonData.add(jsonService.getPokemonData(jsonData));
         Log.d("currentListPokemonData", String.valueOf(currentListPokemonData));
 
-        // Do I display / add to recycler here?
-        //pokemonRecyclerAdapter = new PokemonRecyclerAdapter(currentListPokemon, this);
-        //pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);
-        //pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);
         pokemonListRecyclerView.setAdapter(savedPokemonRecyclerAdapter);
         pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    //todo something here is taking a very long time - can/should I do this elsewhere in a background thread?
-    // possible fix can be saving allPokemon to a new database and adding this searchPokemonByName(String searchString) method there
-    // which could allow the search to happen in a background thread
+
     //Loops through all pokemon, returns ArrayList of PokemonSearchData aka name/url of each pokemon that contains the search string
     public ArrayList<PokemonSearchData> searchPokemonByName(String searchString){
 
@@ -187,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         return allMatchingPokemon;
     }
 
+    //todo something here is taking a very long time - should I not store all data into PokemonData objects but a separate object instead?
     //loops through each PokemonSearchData and gets its url, uses the url to get Pokemon from NetworkService and adds it to currentListPokemon
     // then displays it through recycler view -  I get this data in dataListener(String jsonData)
     public void getPokemonDataFromSearchData(ArrayList<PokemonSearchData> searchDataArrayList){

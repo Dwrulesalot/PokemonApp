@@ -30,4 +30,8 @@ public class MyApp extends Application implements NetworkingService.NetworkingLi
         allPokemon = jsonService.getFullPokemonList(jsonData);
         Log.d("MyApp startDataListener: String.valueOf(allPokemon)", String.valueOf(allPokemon));
     }
+
+    public NetworkingService getNetworkingService() {
+        return networkingService;
+    }
 }
