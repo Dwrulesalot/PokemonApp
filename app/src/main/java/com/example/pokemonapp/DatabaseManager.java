@@ -27,7 +27,7 @@ public class DatabaseManager {
 
     static void buildDBInstance(Context context){
         db = Room.databaseBuilder(context,
-                PokemonDatabase.class, "test3_pokemon_db").build();//If I change PokemonData at all I need to build a new database/change name here
+                PokemonDatabase.class, "test5_pokemon_db").build();//If I change PokemonData at all I need to build a new database/change name here
     }                       //todo change above to pokemon_db when certain it works
 
     public PokemonDatabase getDb(Context context){

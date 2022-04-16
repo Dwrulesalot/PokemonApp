@@ -19,26 +19,52 @@ public class PokemonData {
     int height;
     int weight;
 
-    //ignoring saving below - couldn't figure out Type Converters / making it it's own @ Entity was causing problems too
-    //todo will I need to api call for types/stats to display on details? or only if offline?
-    @Ignore
-    ArrayList<String> types;
-    @Ignore
-    ArrayList<StatModel> stats;
+    //there's a max of 2 types per pokemon: 18 options
+    String type1;
+    String type2;
+    //there's always 6 stats: hp, attack, defense, special-attack, special-defense, speed in that order
+    int hpStat;
+    int attackStat;
+    int defenseStat;
+    int specialAttackStat;
+    int specialDefenseStat;
+    int speedStat;
 
     public PokemonData(){
-        //should set this up eventually
+        id = 0;
+        smallIcon = "";
+        bigIcon = "";
+        name = "";
+        height = 0;
+        weight = 0;
+
+        type1 = "";
+        type2 = "";
+
+        hpStat = 0;
+        attackStat = 0;
+        defenseStat = 0;
+        specialAttackStat = 0;
+        specialDefenseStat = 0;
+        speedStat = 0;
     }
 
-    public PokemonData(int id, String smallIcon, String bigIcon, String name, int height, int weight, ArrayList<String> types, ArrayList<StatModel> stats){
+    public PokemonData(int id, String smallIcon, String bigIcon, String name, int height, int weight, String type1, String type2, int hpStat, int attackStat, int defenseStat,
+                       int specialAttackStat, int specialDefenseStat, int speedStat){
         this.id = id;
         this.smallIcon = smallIcon;
         this.bigIcon = bigIcon;
         this.name = name;
         this.height = height;
         this.weight = weight;
-        this.types = types;
-        this.stats = stats;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.hpStat = hpStat;
+        this.attackStat = attackStat;
+        this.defenseStat = defenseStat;
+        this.specialAttackStat = specialAttackStat;
+        this.specialDefenseStat = specialDefenseStat;
+        this.speedStat = speedStat;
     }
 
     @Override
@@ -51,8 +77,14 @@ public class PokemonData {
                 ", name='" + name + '\'' +
                 ", height=" + height +
                 ", weight=" + weight +
-                ", types=" + types +
-                ", stats=" + stats +
+                ", type1='" + type1 + '\'' +
+                ", type2='" + type2 + '\'' +
+                ", hpStat=" + hpStat +
+                ", attackStat=" + attackStat +
+                ", defenseStat=" + defenseStat +
+                ", specialAttackStat=" + specialAttackStat +
+                ", specialDefenseStat=" + specialDefenseStat +
+                ", speedStat=" + speedStat +
                 '}';
     }
 }

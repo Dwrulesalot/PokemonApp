@@ -27,15 +27,14 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     EditText searchBar;
     RecyclerView pokemonListRecyclerView;
 
-    ArrayList<PokemonData> currentListPokemonData;//back this up in MyApp in onDestroy // don't know if I need this anymore
-    ArrayList<Pokemon> currentListPokemon;//back this up in MyApp in onDestroy
+    ArrayList<PokemonData> currentListPokemonData;//back this up in MyApp in onDestroy
 
     ArrayList<PokemonSearchData> allPokemon;
     ArrayList<PokemonSearchData> currentSearchData;//back this up in MyApp in onDestroy
 
     JsonService jsonService;
 
-    PokemonRecyclerAdapter pokemonRecyclerAdapter;
+    SavedPokemonRecyclerAdapter savedPokemonRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         networkingService = ((MyApp)getApplication()).networkingService;
         allPokemon = ((MyApp)getApplication()).allPokemon;
         currentSearchData = ((MyApp)getApplication()).currentSearchData;
-        currentListPokemonData = ((MyApp)getApplication()).currentListPokemonData;// don't know if I need this anymore
-        currentListPokemon = ((MyApp)getApplication()).currentListPokemon;
+        currentListPokemonData = ((MyApp)getApplication()).currentListPokemonData;
         jsonService = ((MyApp)getApplication()).jsonService;
 
 
@@ -56,11 +54,17 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
                 //todo finish
 
+                //this might be constantly calling whenever search data is >3 therefore causing lag
+
                 //only going to search after 3 letters are entered to save load time
                 if(s.length()>2){
                     //currentSearchData = searchPokemonByName(String.valueOf(s));
                     //temp to test if json parse works
-                    currentSearchData = searchPokemonByName("bulbasaur");
+
+                    allPokemon = ((MyApp)getApplication()).allPokemon;
+
+                    //temp unit test
+                    currentSearchData = searchPokemonByName("asaur");
                     //todo check if empty
                     getPokemonDataFromSearchData(currentSearchData);//does this work?
                     //currentListPokemonData = getPokemonDataFromSearchData(currentSearchData);
@@ -108,19 +112,25 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
         jsonService = ((MyApp)getApplication()).jsonService;
 
-        currentListPokemon.add(jsonService.getPokemon(jsonData));
-        //currentListPokemonData.add(jsonService.getPokemonData(jsonData));//old
-        Log.d("currentListPokemon", String.valueOf(currentListPokemon));
+        //currentListPokemon.add(jsonService.getPokemon(jsonData));
+        currentListPokemonData.add(jsonService.getPokemonData(jsonData));//old
+        Log.d("currentListPokemonData", String.valueOf(currentListPokemonData));
 
         // Do I display / add to recycler here?
-        pokemonRecyclerAdapter = new PokemonRecyclerAdapter(currentListPokemon, this);
-        pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);
+        //pokemonRecyclerAdapter = new PokemonRecyclerAdapter(currentListPokemon, this);
+        //pokemonListRecyclerView.setAdapter(pokemonRecyclerAdapter);
+        //pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);//old
+        pokemonListRecyclerView.setAdapter(savedPokemonRecyclerAdapter);
         pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    //todo something here is taking a very long time - can/should I do this elsewhere in a background thread?
+    // possible fix can be saving allPokemon to a new database and adding this searchPokemonByName(String searchString) method there
+    // which could allow the search to happen in a background thread
     //Loops through all pokemon, returns ArrayList of PokemonSearchData aka name/url of each pokemon that contains the search string
     public ArrayList<PokemonSearchData> searchPokemonByName(String searchString){
-        allPokemon = ((MyApp)getApplication()).allPokemon;
+
         ArrayList<PokemonSearchData> allMatchingPokemon = new ArrayList<>(0);
         PokemonSearchData matchingPokemon;
 

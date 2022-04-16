@@ -17,10 +17,8 @@ public class MyApp extends Application implements NetworkingService.NetworkingLi
 
     //might not need to back this up here
     ArrayList<PokemonSearchData> currentSearchData = new ArrayList<>(0);
-    //might no longer need this
-    ArrayList<PokemonData> currentListPokemonData = new ArrayList<>(0);
 
-    ArrayList<Pokemon> currentListPokemon = new ArrayList<>();
+    ArrayList<PokemonData> currentListPokemonData = new ArrayList<>(0);
 
     public MyApp() {
         networkingService.networkingListener = this;

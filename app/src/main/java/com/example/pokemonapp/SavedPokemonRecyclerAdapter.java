@@ -94,7 +94,6 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
                     int position = getAdapterPosition();//need this for info not currently displayed
                     Context c = view.getContext();
 
-                    //todo check if this will work when list comes from api - should all this info be passed or should I do another api call?
                     Intent detailsIntent = new Intent(c, DetailsActivity.class);
                     detailsIntent.putExtra("name", pokemonName.getText());
                     //text including the decimal and measurement
@@ -107,9 +106,15 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
                     detailsIntent.putExtra("bigImage", pokemonDataArrayList.get(position).bigIcon);
                     detailsIntent.putExtra("id", pokemonDataArrayList.get(position).id);//how will this be effected when using database/api calls
 
-                    //todo fix functionality for stats and types - need to break them down somehow
-                    detailsIntent.putExtra("stats", pokemonDataArrayList.get(position).stats);
-                    detailsIntent.putExtra("types", pokemonDataArrayList.get(position).types);
+                    //todo check if the below works
+                    detailsIntent.putExtra("hpStat", pokemonDataArrayList.get(position).hpStat);
+                    detailsIntent.putExtra("attackStat", pokemonDataArrayList.get(position).attackStat);
+                    detailsIntent.putExtra("defenseStat", pokemonDataArrayList.get(position).defenseStat);
+                    detailsIntent.putExtra("specialAttackStat", pokemonDataArrayList.get(position).specialAttackStat);
+                    detailsIntent.putExtra("specialDefenseStat", pokemonDataArrayList.get(position).specialDefenseStat);
+                    detailsIntent.putExtra("speedStat", pokemonDataArrayList.get(position).speedStat);
+                    detailsIntent.putExtra("type1", pokemonDataArrayList.get(position).type1);
+                    detailsIntent.putExtra("type2", pokemonDataArrayList.get(position).type2);
 
                     c.startActivity(detailsIntent);
                 }

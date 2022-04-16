@@ -38,44 +38,48 @@ public class JsonService {
         return allPokemon;//do I want to return or do I want to just change the MyApp allPokemon variable?
     }
 
-
     //returns all data for an individual Pokemon needed to display in recycler views/details page
     public PokemonData getPokemonData(String jsonData){
 
         PokemonData pokemonData = new PokemonData();
-        Log.d("JONNY", jsonData);
+
         try {
 
             JSONObject mainJsonObject = new JSONObject(jsonData);
-            Log.d("WTF", String.valueOf(mainJsonObject));
+
             pokemonData.height = mainJsonObject.getInt("height");
             pokemonData.id = mainJsonObject.getInt("id");
             pokemonData.name =  mainJsonObject.getString("name");
             pokemonData.weight = mainJsonObject.getInt("weight");
 
 
-            JSONObject sprites1JsonObject = new JSONObject(String.valueOf(mainJsonObject.getJSONObject("sprites")));//does this work?
+            JSONObject sprites1JsonObject = new JSONObject(String.valueOf(mainJsonObject.getJSONObject("sprites")));
             pokemonData.smallIcon = sprites1JsonObject.getString("front_default");
-            JSONObject sprites2JsonObject = new JSONObject(String.valueOf(sprites1JsonObject.getJSONObject("other")));//^^
+            JSONObject sprites2JsonObject = new JSONObject(String.valueOf(sprites1JsonObject.getJSONObject("other")));
             JSONObject sprites3JsonObject = new JSONObject(String.valueOf(sprites2JsonObject.getJSONObject("official-artwork")));
             pokemonData.bigIcon = sprites3JsonObject.getString("front_default");
 
-            /*
-            JSONArray statsArray = new JSONArray(mainJsonObject.getJSONArray("stats"));
+
+            JSONArray statsArray = new JSONArray(String.valueOf(mainJsonObject.getJSONArray("stats")));
+            int[] allStats = new int[6];
 
             //Loops through stats json array, putting each index into a jsonObject then creating a StatModel and adding it to pokemonData.stats
             for(int i = 0; i< statsArray.length(); i++){
-                String index = statsArray.get(0).toString();
-                JSONObject jsonObject = new JSONObject(index);
+                JSONObject jsonObject = new JSONObject(statsArray.get(i).toString());
                 int base_stat = jsonObject.getInt("base_stat");
-                String name = jsonObject.getString("name");
-
-                StatModel statModel = new StatModel(base_stat, name);
-                pokemonData.stats.add(statModel);
+                allStats[i] = base_stat;
             }
+            //todo check that below works
+            pokemonData.hpStat = allStats[0];
+            pokemonData.attackStat = allStats[1];
+            pokemonData.defenseStat = allStats[2];
+            pokemonData.specialAttackStat = allStats[3];
+            pokemonData.specialDefenseStat = allStats[4];
+            pokemonData.speedStat = allStats[5];
 
-            JSONArray typesArray = new JSONArray(mainJsonObject.getJSONArray("types"));
+            JSONArray typesArray = new JSONArray(String.valueOf(mainJsonObject.getJSONArray("types")));
 
+            String[] allTypes = new String[]{"",""};
             //Loops through types json array, putting each index into a jsonObject then adding it to pokemonData.types
             for(int i = 0; i< typesArray.length(); i++){
                 String index = typesArray.get(0).toString();
@@ -83,88 +87,23 @@ public class JsonService {
                 JSONObject typeObject = new JSONObject(String.valueOf(jsonObject.getJSONObject("type")));
                 String name = typeObject.getString("name");
 
-                pokemonData.types.add(name);
+                allTypes[i] = name;
+            }
+            //todo check that below works
+            if(!allTypes[1].equals("")){
+                pokemonData.type1 = allTypes[0];
+                pokemonData.type2 = allTypes[1];
+            }else{
+                pokemonData.type1 = allTypes[0];
             }
 
-             */
-            int base_stat = 45;
-            String name = "hp";
-
-            StatModel statModel = new StatModel(base_stat, name);
-
-            pokemonData.stats.add(statModel);
-            pokemonData.types.add("Fire");
-
-            Log.d("JsonService-getPokemonData(String jsonData)", String.valueOf(pokemonData));
+            Log.d("JsonService-getPokemonData(String jsonData): pokemonData", String.valueOf(pokemonData));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return pokemonData;
-    }
-
-    //returns all data for an individual Pokemon needed to display in recycler views/details page
-    public Pokemon getPokemon(String jsonData){
-
-        Pokemon pokemon = new Pokemon();
-        Log.d("JONNY", jsonData);
-        try {
-
-            JSONObject mainJsonObject = new JSONObject(jsonData);
-            Log.d("WTF", String.valueOf(mainJsonObject));
-            pokemon.height = mainJsonObject.getInt("height");
-            pokemon.id = mainJsonObject.getInt("id");
-            pokemon.name =  mainJsonObject.getString("name");
-            pokemon.weight = mainJsonObject.getInt("weight");
-
-
-            JSONObject sprites1JsonObject = new JSONObject(String.valueOf(mainJsonObject.getJSONObject("sprites")));//does this work?
-            pokemon.smallIcon = sprites1JsonObject.getString("front_default");
-            JSONObject sprites2JsonObject = new JSONObject(String.valueOf(sprites1JsonObject.getJSONObject("other")));//^^
-            JSONObject sprites3JsonObject = new JSONObject(String.valueOf(sprites2JsonObject.getJSONObject("official-artwork")));
-            pokemon.bigIcon = sprites3JsonObject.getString("front_default");
-
-            /*
-            JSONArray statsArray = new JSONArray(mainJsonObject.getJSONArray("stats"));
-
-            //Loops through stats json array, putting each index into a jsonObject then creating a StatModel and adding it to pokemonData.stats
-            for(int i = 0; i< statsArray.length(); i++){
-                String index = statsArray.get(0).toString();
-                JSONObject jsonObject = new JSONObject(index);
-                int base_stat = jsonObject.getInt("base_stat");
-                String name = jsonObject.getString("name");
-
-                StatModel statModel = new StatModel(base_stat, name);
-                pokemonData.stats.add(statModel);
-            }
-
-            JSONArray typesArray = new JSONArray(mainJsonObject.getJSONArray("types"));
-
-            //Loops through types json array, putting each index into a jsonObject then adding it to pokemonData.types
-            for(int i = 0; i< typesArray.length(); i++){
-                String index = typesArray.get(0).toString();
-                JSONObject jsonObject = new JSONObject(index);
-                JSONObject typeObject = new JSONObject(String.valueOf(jsonObject.getJSONObject("type")));
-                String name = typeObject.getString("name");
-
-                pokemonData.types.add(name);
-            }
-
-             */
-
-            StatModel statModel = new StatModel(45, "hp");
-
-            pokemon.stats.add(statModel);
-            pokemon.types.add("Fire");
-
-            Log.d("JsonService-getPokemonData(String jsonData)", String.valueOf(pokemon));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return pokemon;
     }
 
 }
