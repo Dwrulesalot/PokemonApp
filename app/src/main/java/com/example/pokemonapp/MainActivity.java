@@ -38,52 +38,26 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
     SavedPokemonRecyclerAdapter savedPokemonRecyclerAdapter;
 
+    AlertDialog.Builder builder;
+    Boolean initComplete;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //attempting to fix slow httpConnection issue
-        if (android.os.Build.VERSION.SDK_INT > 9)
-        {
-            StrictMode.ThreadPolicy policy = new
-                    StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+        builder = new AlertDialog.Builder(this);
 
         networkingService = ((MyApp)getApplication()).getNetworkingService();
         allPokemon = ((MyApp)getApplication()).allPokemon;
         currentSearchData = ((MyApp)getApplication()).currentSearchData;
         currentListPokemonData = ((MyApp)getApplication()).currentListPokemonData;
         jsonService = ((MyApp)getApplication()).jsonService;
+        initComplete = ((MyApp)getApplication()).initComplete;
 
-
-        /* old search
-        searchBar = (EditText) findViewById(R.id.mainSearchBar);
-        searchBar.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                //todo finish
-                //this might be constantly calling whenever search data is >3 therefore causing lag
-
-                //only going to search after 3 letters are entered to save load time
-                if(s.length()>1){
-                    //currentSearchData = searchPokemonByName(String.valueOf(s));
-                    //temp to test if json parse works
-
-                    allPokemon = ((MyApp)getApplication()).allPokemon;
-
-                    //temp unit test
-                    currentSearchData = searchPokemonByName("asaur");
-                    //todo check if empty
-                    getPokemonDataFromSearchData(currentSearchData);//does this work?
-                    //currentListPokemonData = getPokemonDataFromSearchData(currentSearchData);
-                }
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-        });
-
-         */
-
+        //default search page - once allPokemon has been initialised
+        if(initComplete){
+            networkingService.getDefaultPokemon();
+        }
 
         pokemonListRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);
@@ -94,21 +68,19 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //todo backup all things called from MyApp here
+        ((MyApp)getApplication()).currentSearchData = currentSearchData;
+        ((MyApp)getApplication()).currentListPokemonData = currentListPokemonData;
     }
 
     //Menu Creation // moved Search functionality here as editText was very slow
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
-
         MenuItem menuItem = menu.findItem(R.id.search);
-
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) menuItem.getActionView();
         String input = searchView.getQuery().toString();
 
         if (!input.isEmpty()) {
-
             searchView.setIconified(false);
             searchView.setQuery(input, false);
         }
@@ -118,34 +90,32 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
             public boolean onQueryTextSubmit(String s) {
                 //if something has been entered
                 if(s.length()>0){
-                    //currentSearchData = searchPokemonByName(String.valueOf(s));
-                    //temp to test if json parse works
-
                     allPokemon = ((MyApp)getApplication()).allPokemon;
-
-
                     //clears previous search data /recyclerview data
                     currentSearchData = new ArrayList<>(0);
                     currentListPokemonData = new ArrayList<>(0);
 
                     currentSearchData = searchPokemonByName(s);
-
                     Log.d("onQueryTextSubmit(String s): currentSearchData: ", currentSearchData.toString());
 
-                    //todo check if empty
-                    getPokemonDataFromSearchData(currentSearchData);//does this work?
-                    //currentListPokemonData = getPokemonDataFromSearchData(currentSearchData);
+                    if(!currentSearchData.isEmpty()) {
+                        getPokemonDataFromSearchData(currentSearchData);
+                    }
+                    else{
+                        builder.setTitle(R.string.searchErrorTitle);
+                        builder.setMessage(R.string.searchErrorMsg);
+                        builder.setCancelable(true);
+                        builder.setNegativeButton(R.string.ok,null);
+                        builder.show();
+                    }
                 }
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
-
                 return false;//should this be true?
             }
         });
-
         return true;
     }
 
@@ -170,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     //todo figure out why this takes 1m27s-1m40s every single time to return a single object???
     @Override
     public void dataListener(String jsonData) {
-
         currentListPokemonData.add(jsonService.getPokemonData(jsonData));
         Log.d("currentListPokemonData", String.valueOf(currentListPokemonData));
 
@@ -178,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         pokemonListRecyclerView.setAdapter(savedPokemonRecyclerAdapter);
         pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
 
     //Loops through all pokemon, returns ArrayList of PokemonSearchData aka name/url of each pokemon that contains the search string
     public ArrayList<PokemonSearchData> searchPokemonByName(String searchString){
@@ -193,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
                 allMatchingPokemon.add(matchingPokemon);
             }
         }
-
         return allMatchingPokemon;
     }
 
@@ -202,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     // then displays it through recycler view -  I get this data in dataListener(String jsonData)
     public void getPokemonDataFromSearchData(ArrayList<PokemonSearchData> searchDataArrayList){
         networkingService.networkingListener = this;
-
         for(int i =0; i<searchDataArrayList.size(); i++){
             networkingService.getPokemonByURL(searchDataArrayList.get(i).url);
         }

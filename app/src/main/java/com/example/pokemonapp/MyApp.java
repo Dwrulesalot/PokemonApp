@@ -15,10 +15,10 @@ public class MyApp extends Application implements NetworkingService.NetworkingLi
     //holds ArrayList of all pokemon name/api urls
     ArrayList<PokemonSearchData> allPokemon = new ArrayList<>(0);
 
-    //might not need to back this up here
     ArrayList<PokemonSearchData> currentSearchData = new ArrayList<>(0);
 
     ArrayList<PokemonData> currentListPokemonData = new ArrayList<>(0);
+    Boolean initComplete = false;
 
     public MyApp() {
         networkingService.networkingListener = this;
@@ -28,6 +28,7 @@ public class MyApp extends Application implements NetworkingService.NetworkingLi
     @Override
     public void dataListener(String jsonData) {
         allPokemon = jsonService.getFullPokemonList(jsonData);
+        initComplete = true;
         Log.d("MyApp startDataListener: String.valueOf(allPokemon)", String.valueOf(allPokemon));
     }
 

@@ -15,5 +15,8 @@
     <string name="defenseText">Defense</string>
     <string name="attackText">Attack</string>
     <string name="hpText">HP</string>
+    <string name="searchErrorTitle">Error! </string>
+    <string name="searchErrorMsg">Unable to find any pokemon with that name, make sure to check your spelling.</string>
+    <string name="ok">OK</string>
 
 </resources>
