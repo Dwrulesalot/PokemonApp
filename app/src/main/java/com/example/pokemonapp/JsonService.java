@@ -1,12 +1,17 @@
 package com.example.pokemonapp;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 
 public class JsonService {
 
@@ -35,11 +40,26 @@ public class JsonService {
     }
 
     //returns all data for an individual Pokemon needed to display in recycler views/details page
-    public PokemonData getPokemonData(String jsonData){
+    public PokemonData getPokemonData(String fileName, Context context){
         PokemonData pokemonData = new PokemonData();
+
+        File cacheFile = new File(context.getCacheDir(), fileName);
+
+        String jsonData = "";
+        try {
+            Scanner scanner = new Scanner(cacheFile);
+            jsonData = scanner.nextLine();
+            scanner.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("File as String: ", jsonData);
 
         try {
             JSONObject mainJsonObject = new JSONObject(jsonData);
+
             pokemonData.height = mainJsonObject.getInt("height");
             pokemonData.id = mainJsonObject.getInt("id");
             pokemonData.name =  mainJsonObject.getString("name");
@@ -95,6 +115,7 @@ public class JsonService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        cacheFile.delete();
         return pokemonData;
     }
 }

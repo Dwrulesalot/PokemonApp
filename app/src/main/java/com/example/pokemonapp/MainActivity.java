@@ -20,6 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NetworkingService.NetworkingListener {
@@ -143,8 +145,8 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     }
 
     @Override
-    public void dataListener(String jsonData) {
-        currentListPokemonData.add(jsonService.getPokemonData(jsonData));
+    public void dataListener(String fileName) {
+        currentListPokemonData.add(jsonService.getPokemonData(fileName, getApplicationContext()));
         Log.d("currentListPokemonData", String.valueOf(currentListPokemonData));
 
         savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);
@@ -172,7 +174,8 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     public void getPokemonDataFromSearchData(ArrayList<PokemonSearchData> searchDataArrayList){
         networkingService.networkingListener = this;
         for(int i =0; i<searchDataArrayList.size(); i++){
-            networkingService.getPokemonByURL(searchDataArrayList.get(i).url);
+
+            networkingService.getPokemonByURL(searchDataArrayList.get(i).url, searchDataArrayList.get(i).name, getApplicationContext());
         }
     }
 }

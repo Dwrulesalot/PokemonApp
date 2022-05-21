@@ -1,9 +1,12 @@
 package com.example.pokemonapp;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,17 +36,62 @@ public class NetworkingService {
         connect(allPokemonURL);
     }
 
-    public void getPokemonByURL(String url){
-        connect(url);
+    public void getPokemonByURL(String url, String filename, Context context){
+        connectToFile(url, filename, context);
     }
 
-    public void getDefaultPokemon(){
-        connect(defaultPageURL);
+    //public void getDefaultPokemon(){        connect(defaultPageURL);    }
+
+    //public void getPokemonByID (int id){connect(onePokemonURL+Integer.toString(id));}
+
+
+    public void connectToFile(String url, String fileName, Context context){
+        networkExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection httpURLConnection = null;
+                try {
+                    URL urlObject = new URL(url);
+                    httpURLConnection = (HttpURLConnection)urlObject.openConnection();
+                    httpURLConnection.setRequestMethod("GET");
+                    httpURLConnection.setRequestProperty("Content-Type", "application/json");
+
+                    InputStream inputStream = null;
+                    inputStream = httpURLConnection.getInputStream();
+                    InputStreamReader reader = new InputStreamReader(inputStream);
+
+                    File cacheFile = new File(context.getCacheDir(), fileName);//todo need to ensure this deletes
+
+                    int inputStreamData = 0;
+                    //while not at the end of file
+                    FileOutputStream fos = new FileOutputStream(cacheFile, true);
+                    while ((inputStreamData = reader.read())!=-1){
+                        fos.write(inputStreamData);
+                    }
+                    fos.close();
+                    Log.d("file complete ", "yep");
+
+                    //Back to main thread through interface
+                    networkingHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            networkingListener.dataListener(fileName);
+                        }
+                    });
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    httpURLConnection.disconnect();
+                }
+            }
+        });
     }
 
-    public void getPokemonByID (int id){connect(onePokemonURL+Integer.toString(id));}
-
-    //todo update to write to local storage file / cache instead - make file name the url or something?
     // the json is string too big (10-11 thousand characters for a single pokemon) and slows down everything when InputStreamReader reading into memory
     public void connect(String url){
         networkExecutorService.execute(new Runnable() {
@@ -75,7 +123,7 @@ public class NetworkingService {
                         @Override
                         public void run() {
                             networkingListener.dataListener(finalJsonString);
-                            }
+                        }
                     });
 
                 } catch (MalformedURLException e) {
