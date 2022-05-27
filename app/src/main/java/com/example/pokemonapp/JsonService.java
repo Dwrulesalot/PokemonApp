@@ -16,9 +16,23 @@ import java.util.Scanner;
 public class JsonService {
 
     //json parse for initial search/to give search functionality
-    public ArrayList<PokemonSearchData> getFullPokemonList(String jsonData){
+    public ArrayList<PokemonSearchData> getFullPokemonList(String fileName, Context context){
 
         ArrayList<PokemonSearchData> allPokemon = new ArrayList<>(0);
+
+        File cacheFile = new File(context.getCacheDir(), fileName);
+
+        String jsonData = "";
+        try {
+            Scanner scanner = new Scanner(cacheFile);
+            jsonData = scanner.nextLine();
+            scanner.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        cacheFile.delete();
+
         try {
             JSONObject mainJsonObject = new JSONObject(jsonData);
             JSONArray resultsArray = new JSONArray(String.valueOf(String.valueOf(mainJsonObject.getJSONArray("results"))));
@@ -41,9 +55,12 @@ public class JsonService {
 
     //returns all data for an individual Pokemon needed to display in recycler views/details page
     public PokemonData getPokemonData(String fileName, Context context){
+        //todo Fix issues here with pokemon data returning empty
+
         PokemonData pokemonData = new PokemonData();
 
         File cacheFile = new File(context.getCacheDir(), fileName);
+        Log.d("JsonService - Currently parsing data for: ",fileName);
 
         String jsonData = "";
         try {
@@ -54,8 +71,6 @@ public class JsonService {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        Log.d("File as String: ", jsonData);
 
         try {
             JSONObject mainJsonObject = new JSONObject(jsonData);
@@ -76,7 +91,7 @@ public class JsonService {
 
             //Loops through stats json array, putting each index into a jsonObject then creating a StatModel and adding it to pokemonData.stats
             for(int i = 0; i< statsArray.length(); i++){
-                JSONObject jsonObject = new JSONObject(statsArray.get(i).toString());
+                JSONObject jsonObject = new JSONObject(String.valueOf(statsArray.get(i)));
                 int base_stat = jsonObject.getInt("base_stat");
                 allStats[i] = base_stat;
             }
@@ -94,7 +109,7 @@ public class JsonService {
             if (typesArray.length()==1){//if there's only one type
                 JSONObject jsonObject = new JSONObject(typesArray.get(0).toString());
                 JSONObject typeObject = new JSONObject(String.valueOf(jsonObject.getJSONObject("type")));
-                String name = typeObject.getString("name");
+                String name = String.valueOf(typeObject.getString("name"));
 
                 allTypes[0] = name;
             }else{//there's two types
@@ -112,10 +127,13 @@ public class JsonService {
             pokemonData.type2 = allTypes[1];
             Log.d("JsonService-getPokemonData(String jsonData): pokemonData", String.valueOf(pokemonData));
 
+            cacheFile.delete();
         } catch (JSONException e) {
+            cacheFile.delete();
             e.printStackTrace();
+            Log.d("JsonService-ERROR", "");
         }
-        cacheFile.delete();
+
         return pokemonData;
     }
 }

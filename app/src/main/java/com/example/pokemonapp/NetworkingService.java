@@ -27,17 +27,18 @@ public class NetworkingService {
     public static android.os.Handler networkingHandler = new Handler(Looper.getMainLooper());
 
     interface NetworkingListener{
-        void dataListener(String jsonData);
+        void dataListener(String fileName);
+        void allPokemonDataListener(String fileName);
     }
 
     public NetworkingListener networkingListener;
 
-    public void getAllPokemon(){
-        connect(allPokemonURL);
+    public void getAllPokemon(Context context){
+        connect(allPokemonURL, "allPokemon", context);
     }
 
     public void getPokemonByURL(String url, String filename, Context context){
-        connectToFile(url, filename, context);
+        connect(url, filename, context);
     }
 
     //public void getDefaultPokemon(){        connect(defaultPageURL);    }
@@ -45,7 +46,7 @@ public class NetworkingService {
     //public void getPokemonByID (int id){connect(onePokemonURL+Integer.toString(id));}
 
 
-    public void connectToFile(String url, String fileName, Context context){
+    public void connect(String url, String fileName, Context context){
         networkExecutorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -60,7 +61,8 @@ public class NetworkingService {
                     inputStream = httpURLConnection.getInputStream();
                     InputStreamReader reader = new InputStreamReader(inputStream);
 
-                    File cacheFile = new File(context.getCacheDir(), fileName);//todo need to ensure this deletes
+
+                    File cacheFile = new File(context.getCacheDir(), fileName);
 
                     int inputStreamData = 0;
                     //while not at the end of file
@@ -68,63 +70,30 @@ public class NetworkingService {
                     while ((inputStreamData = reader.read())!=-1){
                         fos.write(inputStreamData);
                     }
+                    //todo find what resource isn't closing after the file is complete
+                    fos.flush();
                     fos.close();
+                    inputStream.close();
+                    reader.close();
                     Log.d("file complete ", "yep");
 
                     //Back to main thread through interface
-                    networkingHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            networkingListener.dataListener(fileName);
-                        }
-                    });
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                finally {
-                    httpURLConnection.disconnect();
-                }
-            }
-        });
-    }
-
-    // the json is string too big (10-11 thousand characters for a single pokemon) and slows down everything when InputStreamReader reading into memory
-    public void connect(String url){
-        networkExecutorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection httpURLConnection = null;
-                try {
-                    URL urlObject = new URL(url);
-                    httpURLConnection = (HttpURLConnection)urlObject.openConnection();
-                    httpURLConnection.setRequestMethod("GET");
-                    httpURLConnection.setRequestProperty("Content-Type", "application/json");
-
-                    InputStream inputStream = null;
-                    inputStream = httpURLConnection.getInputStream();
-                    InputStreamReader reader = new InputStreamReader(inputStream);
-
-                    String jsonData = "";
-                    int inputStreamData = 0;
-                    //while not at the end of file
-                    while ((inputStreamData = reader.read())!=-1){
-                        char current = (char) inputStreamData;
-                        jsonData+=current;
+                    if(fileName.equalsIgnoreCase("allPokemon")){
+                        networkingHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                networkingListener.allPokemonDataListener(fileName);
+                            }
+                        });
                     }
-                    Log.d("json", jsonData);
-
-                    //Back to main thread through interface
-                    final String finalJsonString = jsonData;
-                    networkingHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            networkingListener.dataListener(finalJsonString);
-                        }
-                    });
+                    else {
+                        networkingHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                networkingListener.dataListener(fileName);
+                            }
+                        });
+                    }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();

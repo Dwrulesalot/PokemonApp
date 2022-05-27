@@ -36,7 +36,13 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
     @Override
     public void onBindViewHolder(@NonNull PokemonViewHolder holder, int position) {
         //using Picasso to load/show image
-        Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
+        if (pokemonDataArrayList.get(position).smallIcon.isEmpty()){
+            //todo put placeholder icon?
+            //Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
+        }else{
+            Picasso.get().load(pokemonDataArrayList.get(position).smallIcon).into(holder.pokemonSmallIcon);
+        }
+
         holder.pokemonName.setText(pokemonDataArrayList.get(position).name);
         holder.pokemonHeight.setText(heightToString(String.valueOf(pokemonDataArrayList.get(position).height)));
         holder.pokemonWeight.setText(weightToString(String.valueOf(pokemonDataArrayList.get(position).weight)));

@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
     ArrayList<PokemonSearchData> currentSearchData;
     ArrayList<PokemonSearchData> defaultSearchData;
 
+    int numOfDefaultPokemon = 25;
+    boolean querySubmitted = false;
+
     JsonService jsonService = new JsonService();
     NetworkingService networkingService;
     SavedPokemonRecyclerAdapter savedPokemonRecyclerAdapter;
@@ -42,9 +45,15 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         builder = new AlertDialog.Builder(this);
+        querySubmitted = false;
 
         networkingService = ((MyApp)getApplication()).getNetworkingService();
+        networkingService.networkingListener = this;
         allPokemon = ((MyApp)getApplication()).allPokemon;
+        if (allPokemon.isEmpty()){
+            networkingService.getAllPokemon(getApplicationContext());
+        }
+
         currentSearchData = ((MyApp)getApplication()).currentSearchData;
         currentListPokemonData = ((MyApp)getApplication()).currentListPokemonData;
         jsonService = ((MyApp)getApplication()).jsonService;
@@ -80,7 +89,8 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
             @Override
             public boolean onQueryTextSubmit(String s) {
                 //if something has been entered
-                if(s.length()>0){
+                if(s.length()>0 && querySubmitted == false){
+
                     allPokemon = ((MyApp)getApplication()).allPokemon;
                     //clears previous search data /recyclerview data
                     currentSearchData = new ArrayList<>(0);
@@ -91,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
                     if(!currentSearchData.isEmpty()) {
                         getPokemonDataFromSearchData(currentSearchData);
+
                     }
                     else{
                         builder.setTitle(R.string.searchErrorTitle);
@@ -101,12 +112,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
                     }
                 }
                 else {
-
-                    builder.setTitle(R.string.searchErrorTitle);
-                    builder.setMessage(R.string.emptyErrorMsg);
-                    builder.setCancelable(true);
-                    builder.setNegativeButton(R.string.ok,null);
-                    builder.show();
+                    querySubmitted = false;
                 }
                 return false;
             }
@@ -146,12 +152,20 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
 
     @Override
     public void dataListener(String fileName) {
-        currentListPokemonData.add(jsonService.getPokemonData(fileName, getApplicationContext()));
-        Log.d("currentListPokemonData", String.valueOf(currentListPokemonData));
+        PokemonData newPokemon = jsonService.getPokemonData(fileName, getApplicationContext());
+        currentListPokemonData.add(newPokemon);
+        Log.d("newPokemon", String.valueOf(newPokemon));
 
         savedPokemonRecyclerAdapter = new SavedPokemonRecyclerAdapter(currentListPokemonData, this);
         pokemonListRecyclerView.setAdapter(savedPokemonRecyclerAdapter);
         pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void allPokemonDataListener(String fileName) {
+        allPokemon = jsonService.getFullPokemonList(fileName, getApplicationContext());
+        ((MyApp)getApplication()).allPokemon = allPokemon;
+        ((MyApp)getApplication()).defaultPokemon = new ArrayList<PokemonSearchData>(allPokemon.subList(0,numOfDefaultPokemon));
     }
 
     //Loops through all pokemon, returns ArrayList of PokemonSearchData aka name/url of each pokemon that contains the search string
@@ -166,15 +180,15 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
                 allMatchingPokemon.add(matchingPokemon);
             }
         }
+        querySubmitted = true;
+        Log.d("MainActivity searchPokemonByName: - allMatchingPokemon ", allMatchingPokemon.toString());
         return allMatchingPokemon;
     }
 
     //loops through each PokemonSearchData and gets its url, uses the url to get Pokemon from NetworkService and adds it to currentListPokemon
     // then displays it through recycler view -  I get this data in dataListener(String jsonData)
     public void getPokemonDataFromSearchData(ArrayList<PokemonSearchData> searchDataArrayList){
-        networkingService.networkingListener = this;
         for(int i =0; i<searchDataArrayList.size(); i++){
-
             networkingService.getPokemonByURL(searchDataArrayList.get(i).url, searchDataArrayList.get(i).name, getApplicationContext());
         }
     }
