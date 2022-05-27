@@ -47,6 +47,7 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
         holder.pokemonHeight.setText(heightToString(String.valueOf(pokemonDataArrayList.get(position).height)));
         holder.pokemonWeight.setText(weightToString(String.valueOf(pokemonDataArrayList.get(position).weight)));
     }
+
     public String heightToString(String height){
         StringBuilder heightText = new StringBuilder(height);
         //if shorter than a meter tall adding a 0 in front
@@ -58,6 +59,7 @@ public class SavedPokemonRecyclerAdapter extends RecyclerView.Adapter<SavedPokem
         heightText.append(" "+tempContext.getString(R.string.heightMeasurement));
         return String.valueOf(heightText);
     }
+    
     public String weightToString(String weight){
         StringBuilder weightText = new StringBuilder(weight);
         //if weighing less than a kg adding a 0 in front

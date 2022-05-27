@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
             searchView.setQuery(input, false);
         }
 
+        //Search Functionality
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -150,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         startActivity(savedActivity);
     }
 
+    //Network Listener that displays search results/default search
     @Override
     public void dataListener(String fileName) {
         PokemonData newPokemon = jsonService.getPokemonData(fileName, getApplicationContext());
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements NetworkingService
         pokemonListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    //Network Listener that populates allPokemon Array and allows for search funtionality
     @Override
     public void allPokemonDataListener(String fileName) {
         allPokemon = jsonService.getFullPokemonList(fileName, getApplicationContext());

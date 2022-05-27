@@ -45,7 +45,7 @@ public class NetworkingService {
 
     //public void getPokemonByID (int id){connect(onePokemonURL+Integer.toString(id));}
 
-
+    //Connects to the given url, then gets and stores the received json into a file "fileName" in the cacheDir
     public void connect(String url, String fileName, Context context){
         networkExecutorService.execute(new Runnable() {
             @Override
@@ -70,7 +70,7 @@ public class NetworkingService {
                     while ((inputStreamData = reader.read())!=-1){
                         fos.write(inputStreamData);
                     }
-                    //todo find what resource isn't closing after the file is complete
+                    //todo find what resource isn't closing - networkExecutorService or networkingHandler?
                     fos.flush();
                     fos.close();
                     inputStream.close();

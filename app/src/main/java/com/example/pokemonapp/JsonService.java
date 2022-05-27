@@ -15,24 +15,20 @@ import java.util.Scanner;
 
 public class JsonService {
 
-    //json parse for initial search/to give search functionality
+    //json parse for initial search(all Pokemon names and their urls) to give search functionality
     public ArrayList<PokemonSearchData> getFullPokemonList(String fileName, Context context){
 
         ArrayList<PokemonSearchData> allPokemon = new ArrayList<>(0);
-
         File cacheFile = new File(context.getCacheDir(), fileName);
-
         String jsonData = "";
         try {
             Scanner scanner = new Scanner(cacheFile);
             jsonData = scanner.nextLine();
             scanner.close();
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         cacheFile.delete();
-
         try {
             JSONObject mainJsonObject = new JSONObject(jsonData);
             JSONArray resultsArray = new JSONArray(String.valueOf(String.valueOf(mainJsonObject.getJSONArray("results"))));
@@ -53,10 +49,9 @@ public class JsonService {
         return allPokemon;
     }
 
-    //returns all data for an individual Pokemon needed to display in recycler views/details page
+    //parses through the pokemon's data
+    // returns all data for an individual Pokemon needed to display in recycler views/details page
     public PokemonData getPokemonData(String fileName, Context context){
-        //todo Fix issues here with pokemon data returning empty
-
         PokemonData pokemonData = new PokemonData();
 
         File cacheFile = new File(context.getCacheDir(), fileName);
@@ -126,7 +121,6 @@ public class JsonService {
             pokemonData.type1 = allTypes[0];
             pokemonData.type2 = allTypes[1];
             Log.d("JsonService-getPokemonData(String jsonData): pokemonData", String.valueOf(pokemonData));
-
             cacheFile.delete();
         } catch (JSONException e) {
             cacheFile.delete();

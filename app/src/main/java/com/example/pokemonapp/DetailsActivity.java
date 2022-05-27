@@ -85,7 +85,7 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
         speed = (TextView) findViewById(R.id.detailsSpeed);
         speed.setText(Integer.toString(currentPokemonData.speedStat));
 
-        //functionality to change background depending on type value
+        //functionality to change "type" background depending on type value
         if(currentPokemonData.type1.equalsIgnoreCase("bug")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.bug));}
         else if(currentPokemonData.type1.equalsIgnoreCase("dark")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));}
         else if(currentPokemonData.type1.equalsIgnoreCase("dragon")){type1.setBackgroundColor(ContextCompat.getColor(this, R.color.dragon));}
@@ -129,6 +129,7 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
         sprite = (ImageView) findViewById(R.id.pokemonBigIcon);
         Picasso.get().load(currentPokemonData.bigIcon).into(sprite);
 
+        //button functionality for adding to database
         addPokemonBtn = (Button) findViewById(R.id.savePokemonButton);
         addPokemonBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -137,6 +138,7 @@ public class DetailsActivity extends AppCompatActivity implements DatabaseManage
                 databaseManager.saveNewPokemon(currentPokemonData);
             }
         });
+        //button functionality for removing from database
         deletePokemonBtn = (Button) findViewById(R.id.deletePokemonButton);
         deletePokemonBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
