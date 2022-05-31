@@ -6,7 +6,7 @@ Link to a 2 minute demo video: https://youtu.be/RtZ1WXWK3OI
 </p>
 
 ## Description
-This Project uses the following API https://pokeapi.co/ which doesn't have a built in search functionality so I created a method for that in my [MainActivity](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/MainActivity.java).
+This Project uses the following API https://pokeapi.co/ which doesn't have a built in search by Pokemon Name functionality so I created a method for that in my [MainActivity](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/MainActivity.java).
 
 This application has persistent storage using Room DB, which is managed in the following files: [DatabaseManager.java](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/DatabaseManager.java), [PokemonDao.java](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/PokemonDao.java), [PokemonData.java](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/PokemonData.java), and [PokemonDatabase.java](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/PokemonDatabase.java). 
 
@@ -20,6 +20,6 @@ When a pokemon is displayed in a [RecyclerView with an Adapter](https://github.c
 
 ## Services
 
-[NetworkService.java](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/NetworkingService.java) GETS json data from the https://pokeapi.co/ API and saves it to a file in the cache directory. 
+[NetworkService.java](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/NetworkingService.java) uses multi-threading in the app's background to GET json data from the https://pokeapi.co/ API, saving that data temporarily to a file in the cache directory. 
 
 [JsonService.java](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/JsonService.java) parses through the json data in the created file and defines the data either into an array of [PokemonSearchData](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/PokemonSearchData.java) (run once on inital OnCreate of [MainActivity](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/MainActivity.java), which is used for search functionality) or parses the data into a [PokemonData](https://github.com/Dwrulesalot/PokemonApp/blob/main/app/src/main/java/com/example/pokemonapp/PokemonData.java) object. 
